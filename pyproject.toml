@@ -1,0 +1,48 @@
+[project]
+name = "pyapisports"
+version = "0.1.0"
+description = "Python library for the https://api-sports.io/ API"
+readme = "README.md"
+authors = [
+    { name = "Ozkar L. Garcell", email = "ozkar.garcell@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "httpx>=0.28.1",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.1",
+    "ruff>=0.15.4",
+]
+
+[tool.ruff]
+line-length = 79
+target-version = "py313"
+exclude = ["venv", ".venv"]
+fix = true
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "N"]
+ignore = []
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 79
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_unused_configs = true
+warn_return_any = true
+warn_unused_ignores = true
+pretty = true
+ignore_missing_imports = true
+
+[build-system]
+requires = ["uv_build>=0.10.7,<0.11.0"]
+build-backend = "uv_build"
