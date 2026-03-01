@@ -42,6 +42,7 @@ warn_return_any = true
 warn_unused_ignores = true
 pretty = true
 ignore_missing_imports = true
+warn_redundant_casts = true
 
 [build-system]
 requires = ["uv_build>=0.10.7,<0.11.0"]
