@@ -1,5 +1,11 @@
-from pyapisports.client import ApiSportsClient
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from pyapisports.models import CountryList, Status, TimezoneList
+
+if TYPE_CHECKING:
+    from pyapisports.client import ApiSportsClient
 
 
 class BaseResource:
