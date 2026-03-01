@@ -26,5 +26,5 @@ class ApiSportsClient:
     def __enter__(self) -> "ApiSportsClient":
         return self
 
-    def __exit__(self) -> None:
+    def __exit__(self, *args: tuple[str, Any]) -> None:
         self._http.close()
