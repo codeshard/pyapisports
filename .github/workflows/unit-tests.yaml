@@ -1,0 +1,52 @@
+name: Unit Test & Coverage
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  unit-test-coverage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Restore uv caches
+        id: cache-restore
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ~/.cache/uv
+            ~/.local/share/uv
+            .venv
+          key: uv-main-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            uv-main-
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.10.7"
+          python-version: "3.13"
+          enable-cache: false
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Run Unit Tests with Coverage
+        run: |
+          uv run -- coverage run -m pytest
+          uv run -- coverage report --show-missing
+
+      - name: Save uv caches
+        if: steps.cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            ~/.cache/uv
+            ~/.local/share/uv
+            .venv
+          key: uv-main-${{ hashFiles('uv.lock') }}
