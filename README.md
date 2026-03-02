@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/codeshard/pyapisports/branch/main/graph/badge.svg?token=e8R2FvlITQ)](https://codecov.io/gh/codeshard/pyapisports)
 [![PyPI version](https://img.shields.io/pypi/v/pyapisports.svg)](https://pypi.org/project/pyapisports/)
 [![Python versions](https://img.shields.io/pypi/pyversions/pyapisports.svg)](https://pypi.org/project/pyapisports/)
-[![CI](https://img.shields.io/github/actions/workflow/status/codeshard/pyapisports/ci.yml)](https://github.com/codeshard/pyapisports/actions)
+![CI](https://img.shields.io/github/actions/workflow/status/codeshard/pyapisports/unit-tests.yaml)
 [![License](https://img.shields.io/github/license/codeshard/pyapisports)](LICENSE)
 [![Downloads](https://img.shields.io/pypi/dm/pyapisports)](https://pypi.org/project/pyapisports/)
 
