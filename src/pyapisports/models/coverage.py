@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from typing import Any
 
@@ -25,6 +26,9 @@ class FixtureCoverage:
             "statistics_fixtures": self.statistics_fixtures,
             "statistics_players": self.statistics_players,
         }
+
+    def to_json(self, **kwargs: Any) -> str:
+        return json.dumps(self.to_dict(), **kwargs)
 
 
 @dataclass
