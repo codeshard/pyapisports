@@ -61,3 +61,33 @@ def timezone_data():
             "Asia/Tokyo",
         ]
     }
+
+
+@pytest.fixture
+def fixture_coverage_data():
+    return {
+        "events": True,
+        "lineups": True,
+        "statistics_fixtures": False,
+        "statistics_players": False,
+    }
+
+
+@pytest.fixture
+def coverage_data():
+    return {
+        "fixtures": {
+            "events": True,
+            "lineups": True,
+            "statistics_fixtures": False,
+            "statistics_players": False,
+        },
+        "standings": True,
+        "players": True,
+        "top_scorers": True,
+        "top_assists": True,
+        "top_cards": True,
+        "injuries": True,
+        "predictions": True,
+        "odds": False,
+    }

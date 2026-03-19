@@ -69,3 +69,6 @@ class Coverage:
             "predictions": self.predictions,
             "odds": self.odds,
         }
+
+    def to_json(self, **kwargs: Any) -> str:
+        return json.dumps(self.to_dict(), **kwargs)
