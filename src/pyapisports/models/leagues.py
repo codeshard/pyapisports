@@ -6,8 +6,6 @@ from .base import BaseList
 from .country import Country
 from .seasons import Season
 
-# from pyapisports.models import BaseList, Country, Season
-
 
 @dataclass
 class League:
