@@ -1,8 +1,9 @@
 # PyAPISports
+[![PyPI version](https://img.shields.io/pypi/v/pyapisports.svg)](https://pypi.org/project/pyapisports/)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/pyapisports)
+![GitHub License](https://img.shields.io/github/license/codeshard/pyapisports)
 ![CI](https://img.shields.io/github/actions/workflow/status/codeshard/pyapisports/unit-tests.yaml)
 [![codecov](https://codecov.io/gh/codeshard/pyapisports/branch/main/graph/badge.svg?token=e8R2FvlITQ)](https://codecov.io/gh/codeshard/pyapisports)
-[![PyPI version](https://img.shields.io/pypi/v/pyapisports.svg)](https://pypi.org/project/pyapisports/)
-[![Python versions](https://img.shields.io/pypi/pyversions/pyapisports.svg)](https://pypi.org/project/pyapisports/)
 
 A modern Python client for the API-Sports APIs.
 
