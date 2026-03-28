@@ -338,3 +338,69 @@ class TestCoverageModel:
         assert d["standings"] is True
         assert d["fixtures"]["events"] is True
         assert d["odds"] is False
+
+
+class TestVenueModel:
+    @pytest.fixture
+    def pl(self, football, mock_client, venues_payload):
+        mock_client._get.return_value = venues_payload
+        return football.get_venues(search="manches")[0]
+
+    def test_venue_fields(self, pl):
+        assert pl.id == 556
+        assert pl.name == "Old Trafford"
+        assert pl.city == "Manchester"
+
+    def test_league_to_dict(self, pl):
+        d = pl.to_dict()
+        assert d["id"] == 556
+        assert d["name"] == "Old Trafford"
+
+    def test_league_to_json(self, pl):
+        parsed = json.loads(pl.to_json())
+        assert parsed["name"] == "Old Trafford"
+
+
+class TestGetVenuesList:
+    def test_returns_venues_list(self, football, mock_client, venues_payload):
+        mock_client._get.return_value = venues_payload
+        result = football.get_venues(search="manches")
+        assert result is not None
+
+    def test_length(self, football, mock_client, venues_payload):
+        mock_client._get.return_value = venues_payload
+        result = football.get_venues(search="manches")
+        assert len(result) == 1
+
+    def test_iterable(self, football, mock_client, venues_payload):
+        mock_client._get.return_value = venues_payload
+        result = football.get_venues(search="manches")
+        leagues = list(result)
+        assert len(leagues) == 1
+
+    def test_find_by_name(self, football, mock_client, venues_payload):
+        mock_client._get.return_value = venues_payload
+        result = football.get_venues(name="Old Trafford")
+        assert result.find_by_name("Old Trafford").id == 556
+
+    def test_find_by_name_case_insensitive(
+        self, football, mock_client, venues_payload
+    ):
+        mock_client._get.return_value = venues_payload
+        result = football.get_venues(search="manches")
+        assert result.find_by_name("old trafford") == result.find_by_name(
+            "Old Trafford"
+        )
+
+    def test_find_by_name_not_found(
+        self, football, mock_client, venues_payload
+    ):
+        mock_client._get.return_value = venues_payload
+        result = football.get_venues(search="manches")
+        assert result.find_by_name("Nonexistent") is None
+
+    def test_filter_by_country(self, football, mock_client, venues_payload):
+        mock_client._get.return_value = venues_payload
+        result = football.get_venues(id=556)
+        filtered = result.find_by_country("england")
+        assert filtered.name == "Old Trafford"

@@ -272,3 +272,40 @@ def leagues_payload():
             }
         ],
     }
+
+
+@pytest.fixture
+def venue_data():
+    return {
+        "id": 556,
+        "name": "Old Trafford",
+        "address": "Sir Matt Busby Way",
+        "city": "Manchester",
+        "country": "England",
+        "capacity": 76212,
+        "surface": "grass",
+        "image": "https://media.api-sports.io/football/venues/556.png",
+    }
+
+
+@pytest.fixture
+def venues_payload():
+    return {
+        "get": "venues",
+        "parameters": {"id": "556"},
+        "errors": [],
+        "results": 1,
+        "paging": {"current": 1, "total": 1},
+        "response": [
+            {
+                "id": 556,
+                "name": "Old Trafford",
+                "address": "Sir Matt Busby Way",
+                "city": "Manchester",
+                "country": "England",
+                "capacity": 76212,
+                "surface": "grass",
+                "image": "https://media.api-sports.io/football/venues/556.png",
+            }
+        ],
+    }
