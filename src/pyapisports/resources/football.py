@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from pyapisports.models import LeagueList, SeasonsList
+from pyapisports.exceptions import APISportsError
+from pyapisports.models import CountryList, LeagueList, SeasonsList, VenueList
 from pyapisports.resources import BaseResource
 
 if TYPE_CHECKING:
@@ -13,7 +14,52 @@ class FootballResource(BaseResource):
     def __init__(self, client: ApiSportsClient):
         self._client = client
 
+    def get_countries(
+        self,
+        name: str | None = None,
+        code: str | None = None,
+        search: str | None = None,
+    ) -> CountryList:
+        """Retrieve a  list of available countries for the leagues endpoint.
+
+        Args:
+            name (str, optional): The name of the country
+            code (str, optional): The Alpha code of the country
+            search: (str, optional): The name of the country (+ 3 characters).
+
+        Returns:
+            CountryList: Collection of countries matching the query.
+
+        Example:
+            >>> countries = client.resource.get_countries()
+            >>> countries.to_json()
+
+        API Reference:
+            GET https://www.api-football.com/documentation-v3#tag/Countries"""
+        params = {}
+        if name:
+            params["name"] = name
+        if code:
+            params["code"] = code
+        if search:
+            params["search"] = search
+
+        raw = self._client._get("/countries", params=params)
+        return CountryList.from_api(raw)
+
     def get_seasons(self) -> SeasonsList:
+        """Retrieve a  list of available seasons, that can be used in other
+        endpoints as filters.
+
+        Returns:
+            SeasonsList: List of available seasons.
+
+        Example:
+            >>> seasons = client.resource.get_seasons()
+            >>> seasons.to_json()
+
+        API Reference:
+            GET https://www.api-football.com/documentation-v3#tag/Leagues/operation/get-seasons"""
         raw = self._client._get("/leagues/seasons")
         return SeasonsList.from_api(raw)
 
@@ -45,3 +91,27 @@ class FootballResource(BaseResource):
 
         raw = self._client._get("/leagues", params=params)
         return LeagueList.from_api(raw)
+
+    def get_venues(
+        self,
+        id: int | None = None,
+        name: str | None = None,
+        city: str | None = None,
+        country: str | None = None,
+        search: str | None = None,
+    ) -> VenueList:
+        if not any([id, name, city, country, search]):
+            raise APISportsError("At least one parameter must be provided")
+        params: dict[str, Any] = {}
+        if id:
+            params["id"] = id
+        if name:
+            params["name"] = name
+        if city:
+            params["city"] = city
+        if country:
+            params["country"] = country
+        if search:
+            params["search"] = search
+        raw = self._client._get("/venues", params=params)
+        return VenueList.from_api(raw)
