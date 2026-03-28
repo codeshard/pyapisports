@@ -1,7 +1,7 @@
 from pyapisports.models import League
 
 
-class TestCountry:
+class TestLeague:
     def test_from_api(self, league_data):
         league = League.from_api(league_data)
         assert league.id == 39

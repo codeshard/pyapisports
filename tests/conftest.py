@@ -169,6 +169,29 @@ def seasons_list_data():
 
 
 @pytest.fixture
+def countries_payload():
+    return {
+        "get": "countries",
+        "parameters": {"name": "England"},
+        "errors": [],
+        "results": 3,
+        "response": [
+            {
+                "name": "England",
+                "code": "GB",
+                "flag": "https://media.api-sports.io/flags/gb.svg",
+            },
+            {
+                "name": "France",
+                "code": "FR",
+                "flag": "https://media.api-sports.io/flags/fr.svg",
+            },
+            {"name": "Kosovo", "code": None, "flag": None},
+        ],
+    }
+
+
+@pytest.fixture
 def seasons_payload():
     return {
         "get": "leagues/seasons",

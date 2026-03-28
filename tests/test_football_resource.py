@@ -4,6 +4,36 @@ from datetime import date
 import pytest
 
 
+class TestGetCountries:
+    def test_no_params_by_default(
+        self, football, mock_client, countries_payload
+    ):
+        mock_client._get.return_value = countries_payload
+        football.get_countries()
+        mock_client._get.assert_called_once_with("/countries", params={})
+
+    def test_passes_name(self, football, mock_client, countries_payload):
+        mock_client._get.return_value = countries_payload
+        football.get_countries(name="England")
+        mock_client._get.assert_called_once_with(
+            "/countries", params={"name": "England"}
+        )
+
+    def test_passes_code(self, football, mock_client, countries_payload):
+        mock_client._get.return_value = countries_payload
+        football.get_countries(code="GB")
+        mock_client._get.assert_called_once_with(
+            "/countries", params={"code": "GB"}
+        )
+
+    def test_passes_search(self, football, mock_client, countries_payload):
+        mock_client._get.return_value = countries_payload
+        football.get_countries(search="engl")
+        mock_client._get.assert_called_once_with(
+            "/countries", params={"search": "engl"}
+        )
+
+
 class TestGetSeasons:
     def test_calls_correct_endpoint(
         self, football, mock_client, seasons_payload
