@@ -73,6 +73,19 @@ class FootballResource(BaseResource):
         current: bool | None = None,
         search: str | None = None,
     ) -> LeagueList:
+        """Retrieve a  list of available leagues and cups.
+        The league id are unique in the API and leagues keep it across all
+        seasons
+
+        Returns:
+            LeaguesList: List of available leagues and cups.
+
+        Example:
+            >>> leagues = client.resource.get_leagues()
+            >>> leagues.to_json()
+
+        API Reference:
+            GET https://www.api-football.com/documentation-v3#tag/Leagues/operation/get-leagues"""
         params: dict[str, Any] = {}
         if id:
             params["id"] = id
@@ -100,6 +113,19 @@ class FootballResource(BaseResource):
         country: str | None = None,
         search: str | None = None,
     ) -> VenueList:
+        """Retrieve a  list of available venues.
+        The venue id are unique in the API.
+        At least one parameter is required.
+
+        Returns:
+            VenueList: List of available venues.
+
+        Example:
+            >>> venues = client.resource.get_venues(id=556)
+            >>> venues.to_json()
+
+        API Reference:
+            GET https://www.api-football.com/documentation-v3#tag/Venues/operation/get-venues"""
         if not any([id, name, city, country, search]):
             raise APISportsError("At least one parameter must be provided")
         params: dict[str, Any] = {}
