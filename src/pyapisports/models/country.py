@@ -1,6 +1,8 @@
 import json
 from dataclasses import dataclass
-from typing import Any, Iterator, Optional
+from typing import Any, Optional
+
+from .base import BaseList
 
 
 @dataclass
@@ -29,34 +31,30 @@ class Country:
 
 
 @dataclass
-class CountryList:
-    countries: list[Country]
-
+class CountryList(BaseList[Country]):
     @classmethod
     def from_api(cls, data: dict[str, Any]) -> "CountryList":
-        return cls(countries=[Country.from_api(c) for c in data["response"]])
-
-    def __iter__(self) -> Iterator[Country]:
-        return iter(self.countries)
-
-    def __len__(self) -> int:
-        return len(self.countries)
-
-    def __getitem__(self, index: int) -> Country:
-        return self.countries[index]
+        return cls(
+            items=[Country.from_api(country) for country in data["response"]]
+        )
 
     def find_by_name(self, name: str) -> Optional[Country]:
         name = name.lower()
         return next(
-            (c for c in self.countries if c.name.lower() == name), None
+            (
+                country
+                for country in self.items
+                if country.name.lower() == name
+            ),
+            None,
         )
 
     def find_by_code(self, code: str) -> Optional[Country]:
         code = code.upper()
-        return next((c for c in self.countries if c.code == code), None)
+        return next((c for c in self.items if c.code == code), None)
 
     def to_list(self) -> list[dict[str, Any]]:
-        return [c.to_dict() for c in self.countries]
+        return [country.to_dict() for country in self.items]
 
     def to_json(self, **kwargs: Any) -> str:
         return json.dumps(self.to_list(), **kwargs)

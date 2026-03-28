@@ -1,84 +1,186 @@
+import json
+
+import pytest
+
 from pyapisports.models import Country, CountryList
+
+FIXTURE = {
+    "response": [
+        {
+            "name": "England",
+            "code": "GB",
+            "flag": "https://media.api-sports.io/flags/gb.svg",
+        },
+        {
+            "name": "France",
+            "code": "FR",
+            "flag": "https://media.api-sports.io/flags/fr.svg",
+        },
+        {"name": "Kosovo", "code": None, "flag": None},
+    ]
+}
+
+
+@pytest.fixture
+def country_list():
+    return CountryList.from_api(FIXTURE)
+
+
+# ---------------------------------------------------------------------------
+# Country model
+# ---------------------------------------------------------------------------
 
 
 class TestCountry:
-    def test_from_api(self, country_data):
-        c = Country.from_api(country_data)
-        assert c.name == "England"
-        assert c.code == "GB"
-        assert c.flag == "https://flag.example.com/gb.svg"
-
-    def test_from_api_optional_fields_missing(self):
-        c = Country.from_api({"name": "Unknown"})
-        assert c.name == "Unknown"
-        assert c.code is None
-        assert c.flag is None
-
-    def test_to_dict(self, country_data):
-        c = Country.from_api(country_data)
-        d = c.to_dict()
-        assert d == {
+    def test_from_api_fields(self):
+        raw = {
             "name": "England",
             "code": "GB",
-            "flag": "https://flag.example.com/gb.svg",
+            "flag": "https://media.api-sports.io/flags/gb.svg",
+        }
+        c = Country.from_api(raw)
+        assert c.name == "England"
+        assert c.code == "GB"
+        assert c.flag == "https://media.api-sports.io/flags/gb.svg"
+
+    def test_nullable_code(self):
+        c = Country.from_api({"name": "Kosovo", "code": None, "flag": None})
+        assert c.code is None
+
+    def test_nullable_flag(self):
+        c = Country.from_api({"name": "Kosovo", "code": None, "flag": None})
+        assert c.flag is None
+
+    def test_to_dict(self):
+        c = Country.from_api(
+            {
+                "name": "England",
+                "code": "GB",
+                "flag": "https://media.api-sports.io/flags/gb.svg",
+            }
+        )
+        assert c.to_dict() == {
+            "name": "England",
+            "code": "GB",
+            "flag": "https://media.api-sports.io/flags/gb.svg",
         }
 
-    def test_to_json(self, country_data):
-        c = Country.from_api(country_data)
-        import json
+    def test_to_dict_nullable(self):
+        c = Country.from_api({"name": "Kosovo", "code": None, "flag": None})
+        assert c.to_dict() == {"name": "Kosovo", "code": None, "flag": None}
 
+    def test_to_json(self):
+        c = Country.from_api(
+            {
+                "name": "England",
+                "code": "GB",
+                "flag": "https://media.api-sports.io/flags/gb.svg",
+            }
+        )
         parsed = json.loads(c.to_json())
         assert parsed["name"] == "England"
+        assert parsed["code"] == "GB"
 
 
-class TestCountryList:
-    def test_from_api_length(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        assert len(cl) == 3
+# ---------------------------------------------------------------------------
+# CountryList — construction
+# ---------------------------------------------------------------------------
 
-    def test_iteration(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        names = [c.name for c in cl]
-        assert names == ["England", "France", "Germany"]
 
-    def test_getitem(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        assert cl[0].name == "England"
+class TestCountryListConstruction:
+    def test_from_api_returns_country_list(self, country_list):
+        assert isinstance(country_list, CountryList)
 
-    def test_find_by_name_found(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        c = cl.find_by_name("france")
-        assert c is not None
-        assert c.code == "FR"
+    def test_items_are_country_instances(self, country_list):
+        for c in country_list:
+            assert isinstance(c, Country)
 
-    def test_find_by_name_case_insensitive(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        assert cl.find_by_name("ENGLAND") is not None
+    def test_length(self, country_list):
+        assert len(country_list) == 3
 
-    def test_find_by_name_not_found(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        assert cl.find_by_name("Brazil") is None
 
-    def test_find_by_code_found(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        c = cl.find_by_code("de")
-        assert c is not None
-        assert c.name == "Germany"
+# ---------------------------------------------------------------------------
+# CountryList — iteration & access
+# ---------------------------------------------------------------------------
 
-    def test_find_by_code_not_found(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        assert cl.find_by_code("XX") is None
 
-    def test_to_list(self, country_list_data):
-        cl = CountryList.from_api(country_list_data)
-        result = cl.to_list()
+class TestCountryListAccess:
+    def test_iterable(self, country_list):
+        names = [c.name for c in country_list]
+        assert names == ["England", "France", "Kosovo"]
+
+    def test_getitem(self, country_list):
+        assert country_list[0].name == "England"
+        assert country_list[-1].name == "Kosovo"
+
+
+# ---------------------------------------------------------------------------
+# CountryList — finders
+# ---------------------------------------------------------------------------
+
+
+class TestCountryListFinders:
+    def test_find_by_name(self, country_list):
+        result = country_list.find_by_name("England")
+        assert result is not None
+        assert result.code == "GB"
+
+    def test_find_by_name_case_insensitive(self, country_list):
+        assert country_list.find_by_name(
+            "england"
+        ) == country_list.find_by_name("ENGLAND")
+
+    def test_find_by_name_not_found(self, country_list):
+        assert country_list.find_by_name("Narnia") is None
+
+    def test_find_by_code(self, country_list):
+        result = country_list.find_by_code("FR")
+        assert result is not None
+        assert result.name == "France"
+
+    def test_find_by_code_case_insensitive(self, country_list):
+        assert country_list.find_by_code("fr") == country_list.find_by_code(
+            "FR"
+        )
+
+    def test_find_by_code_not_found(self, country_list):
+        assert country_list.find_by_code("ZZ") is None
+
+    def test_find_by_code_skips_null_codes(self, country_list):
+        # Kosovo has code=None, should not raise, just skip
+        assert country_list.find_by_code("None") is None
+
+
+# ---------------------------------------------------------------------------
+# CountryList — serialization
+# ---------------------------------------------------------------------------
+
+
+class TestCountryListSerialization:
+    def test_to_list_returns_list_of_dicts(self, country_list):
+        result = country_list.to_list()
         assert isinstance(result, list)
-        assert len(result) == 3
-        assert result[0]["name"] == "England"
+        assert all(isinstance(item, dict) for item in result)
 
-    def test_to_json(self, country_list_data):
-        import json
+    def test_to_list_values(self, country_list):
+        result = country_list.to_list()
+        assert result[0] == {
+            "name": "England",
+            "code": "GB",
+            "flag": "https://media.api-sports.io/flags/gb.svg",
+        }
 
-        cl = CountryList.from_api(country_list_data)
-        parsed = json.loads(cl.to_json())
+    def test_to_list_nullable(self, country_list):
+        result = country_list.to_list()
+        assert result[2] == {"name": "Kosovo", "code": None, "flag": None}
+
+    def test_to_json(self, country_list):
+        parsed = json.loads(country_list.to_json())
+        assert isinstance(parsed, list)
         assert len(parsed) == 3
+        assert parsed[1]["code"] == "FR"
+
+    def test_to_json_kwargs(self, country_list):
+        # indent kwarg should be forwarded correctly
+        result = country_list.to_json(indent=2)
+        assert "\n" in result
