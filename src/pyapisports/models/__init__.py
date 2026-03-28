@@ -5,6 +5,7 @@ from .leagues import League, LeagueList
 from .seasons import Season, SeasonsList
 from .status import Account, Requests, Status, Subscription
 from .timezone import TimezoneList
+from .venues import Venue, VenueList
 
 __all__ = [
     "Account",
@@ -21,4 +22,6 @@ __all__ = [
     "Status",
     "Subscription",
     "TimezoneList",
+    "Venue",
+    "VenueList",
 ]

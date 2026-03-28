@@ -1,0 +1,92 @@
+import json
+from dataclasses import dataclass
+from typing import Any, Optional
+
+from .base import BaseList
+
+
+@dataclass
+class Venue:
+    id: int
+    name: str
+    address: str
+    city: str
+    country: str
+    capacity: int
+    surface: str
+    image: str
+
+    @classmethod
+    def from_api(cls, data: dict[str, Any]) -> "Venue":
+        return cls(
+            id=data["id"],
+            name=data["name"],
+            address=data["address"],
+            city=data["city"],
+            country=data["country"],
+            capacity=data["capacity"],
+            surface=data["surface"],
+            image=data["image"],
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "address": self.address,
+            "city": self.city,
+            "country": self.country,
+            "capacity": self.capacity,
+            "surface": self.surface,
+            "image": self.image,
+        }
+
+    def to_json(self, **kwargs: Any) -> str:
+        return json.dumps(self.to_dict(), **kwargs)
+
+
+@dataclass
+class VenueList(BaseList[Venue]):
+    @classmethod
+    def from_api(cls, data: dict[str, Any]) -> "VenueList":
+        return cls(items=[Venue.from_api(venue) for venue in data["response"]])
+
+    def find_by_id(self, id: int) -> Optional[Venue]:
+        return next((venue for venue in self.items if venue.id == id), None)
+
+    def find_by_name(self, name: str) -> Optional[Venue]:
+        name = name.lower()
+        return next(
+            (venue for venue in self.items if venue.name.lower() == name),
+            None,
+        )
+
+    def find_by_city(self, city: str) -> Optional[Venue]:
+        city = city.lower()
+        return next(
+            (venue for venue in self.items if venue.city.lower() == city),
+            None,
+        )
+
+    def find_by_country(self, country: str) -> Optional[Venue]:
+        country = country.lower()
+        return next(
+            (
+                venue
+                for venue in self.items
+                if venue.country.lower() == country
+            ),
+            None,
+        )
+
+    def filter_by_param(self, search: str) -> "VenueList":
+        search = search.lower()
+        return VenueList(
+            items=[venue for venue in self.items if venue.name == search]
+        )
+
+    def to_list(self) -> list[dict[str, Any]]:
+        return [venue.to_dict() for venue in self.items]
+
+    def to_json(self, **kwargs: Any) -> str:
+        return json.dumps(self.to_list(), **kwargs)
