@@ -3,7 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from pyapisports.exceptions import APISportsError
-from pyapisports.models import CountryList, LeagueList, SeasonsList, VenueList
+from pyapisports.models import (
+    CountryList,
+    LeagueList,
+    SeasonsList,
+    TeamList,
+    VenueList,
+)
 from pyapisports.resources import BaseResource
 
 if TYPE_CHECKING:
@@ -141,3 +147,37 @@ class FootballResource(BaseResource):
             params["search"] = search
         raw = self._client._get("/venues", params=params)
         return VenueList.from_api(raw)
+
+    def get_teams_info(
+        self,
+        id: int | None = None,
+        name: str | None = None,
+        league: str | None = None,
+        season: int | None = None,
+        country: str | None = None,
+        code: str | None = None,
+        venue_id: int | None = None,
+        search: str | None = None,
+    ) -> TeamList:
+        """Retrieve a  list of available teams.
+        The team id are unique in the API.
+        At least one parameter is required.
+
+        Returns:
+            TeamList: List of available teams.
+
+        Example:
+            >>> teams = client.resource.get_teams(id=33)
+            >>> teams.to_json()
+
+        API Reference:
+            GET https://www.api-football.com/documentation-v3#tag/Teams/operation/get-teams"""
+        if not any(
+            [id, name, league, season, country, code, venue_id, search]
+        ):
+            raise APISportsError("At least one parameter must be provided")
+        params: dict[str, Any] = {}
+        if id:
+            params["id"] = id
+        raw = self._client._get("/teams", params=params)
+        return TeamList.from_api(raw)

@@ -4,6 +4,7 @@ from .coverage import Coverage, FixtureCoverage
 from .leagues import League, LeagueList
 from .seasons import Season, SeasonsList
 from .status import Account, Requests, Status, Subscription
+from .teams import Team, TeamList
 from .timezone import TimezoneList
 from .venues import Venue, VenueList
 
@@ -21,6 +22,8 @@ __all__ = [
     "SeasonsList",
     "Status",
     "Subscription",
+    "Team",
+    "TeamList",
     "TimezoneList",
     "Venue",
     "VenueList",
