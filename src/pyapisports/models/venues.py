@@ -11,7 +11,7 @@ class Venue:
     name: str
     address: str
     city: str
-    country: str
+    country: Optional[str]
     capacity: int
     surface: str
     image: str
@@ -23,7 +23,7 @@ class Venue:
             name=data["name"],
             address=data["address"],
             city=data["city"],
-            country=data["country"],
+            country=data.get("country"),
             capacity=data["capacity"],
             surface=data["surface"],
             image=data["image"],
@@ -71,11 +71,7 @@ class VenueList(BaseList[Venue]):
     def find_by_country(self, country: str) -> Optional[Venue]:
         country = country.lower()
         return next(
-            (
-                venue
-                for venue in self.items
-                if venue.country.lower() == country
-            ),
+            (venue for venue in self.items if venue.country == country),
             None,
         )
 
