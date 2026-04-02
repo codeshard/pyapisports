@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from .base import BaseList
+from .leagues import League
 from .venues import Venue
 
 
@@ -10,22 +11,22 @@ from .venues import Venue
 class Team:
     id: int
     name: str
-    code: str
-    country: str
-    founded: int
+    code: Optional[str]
+    country: Optional[str]
+    founded: Optional[str]
     national: bool
     logo: str
-    venue: Venue
+    venue: Optional[Venue]
 
     @classmethod
     def from_api(cls, data: dict[str, Any]) -> "Team":
         return cls(
             id=data["team"]["id"],
             name=data["team"]["name"],
-            code=data["team"]["code"],
-            country=data["team"]["country"],
-            founded=data["team"]["founded"],
-            national=data["team"]["national"],
+            code=data["team"].get("code"),
+            country=data["team"].get("country"),
+            founded=data["team"].get(["founded"]),
+            national=data["team"].get("national"),
             logo=data["team"]["logo"],
             venue=Venue.from_api(data["venue"]),
         )
@@ -94,3 +95,10 @@ class TeamList(BaseList[Team]):
 
     def to_json(self, **kwargs: Any) -> str:
         return json.dumps(self.to_list(), **kwargs)
+
+
+@dataclass
+class Statistics:
+    league: League
+    team: Team
+    form: str
