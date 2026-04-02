@@ -179,5 +179,11 @@ class FootballResource(BaseResource):
         params: dict[str, Any] = {}
         if id:
             params["id"] = id
+        if name:
+            params["name"] = name
+        if league:
+            params["league"] = league
+        if season:
+            params["season"] = season
         raw = self._client._get("/teams", params=params)
         return TeamList.from_api(raw)
