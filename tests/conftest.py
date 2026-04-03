@@ -309,3 +309,67 @@ def venues_payload():
             }
         ],
     }
+
+
+@pytest.fixture
+def teams_payload():
+    return {
+        "get": "teams",
+        "parameters": {"league": "39", "season": "2024"},
+        "errors": [],
+        "results": 3,
+        "response": [
+            {
+                "team": {
+                    "id": 33,
+                    "name": "Manchester United",
+                    "code": "MUN",
+                    "country": "England",
+                    "founded": 1878,
+                    "national": False,
+                    "logo": "https://media.api-sports.io/football/teams/33.png",
+                },
+                "venue": {
+                    "id": 556,
+                    "name": "Old Trafford",
+                    "address": "Sir Matt Busby Way",
+                    "city": "Manchester",
+                    "capacity": 76212,
+                    "surface": "grass",
+                    "image": "https://media.api-sports.io/football/venues/556.png",
+                },
+            },
+            {
+                "team": {
+                    "id": 40,
+                    "name": "Liverpool",
+                    "code": "LIV",
+                    "country": "England",
+                    "founded": 1892,
+                    "national": False,
+                    "logo": "https://media.api-sports.io/football/teams/40.png",
+                },
+                "venue": {
+                    "id": 741,
+                    "name": "Anfield",
+                    "address": "Anfield Road",
+                    "city": "Liverpool",
+                    "capacity": 53394,
+                    "surface": "grass",
+                    "image": "https://media.api-sports.io/football/venues/741.png",
+                },
+            },
+            {
+                "team": {
+                    "id": 99,
+                    "name": "AZ Alkmaar",
+                    "code": None,
+                    "country": None,
+                    "founded": None,
+                    "national": True,
+                    "logo": "https://media.api-sports.io/football/teams/99.png",
+                },
+                "venue": None,
+            },
+        ],
+    }
