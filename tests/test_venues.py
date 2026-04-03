@@ -1,4 +1,4 @@
-from pyapisports.models import Venue
+from pyapisports.football.models import Venue
 
 
 class TestVenue:

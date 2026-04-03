@@ -69,7 +69,7 @@ class VenueList(BaseList[Venue]):
         )
 
     def find_by_country(self, country: str) -> Optional[Venue]:
-        country = country.lower()
+        country = country.capitalize()
         return next(
             (venue for venue in self.items if venue.country == country),
             None,

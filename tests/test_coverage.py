@@ -1,4 +1,4 @@
-from pyapisports.models import Coverage, FixtureCoverage
+from pyapisports.football.models import Coverage, FixtureCoverage
 
 
 class TestFixtureCoverage:

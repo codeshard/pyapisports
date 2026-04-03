@@ -3,14 +3,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from pyapisports.exceptions import APISportsError
-from pyapisports.models import (
+from pyapisports.football.models import (
     CountryList,
     LeagueList,
     SeasonsList,
     TeamList,
     VenueList,
 )
-from pyapisports.resources import BaseResource
+from pyapisports.football.resources import BaseResource
 
 if TYPE_CHECKING:
     from pyapisports.client import ApiSportsClient

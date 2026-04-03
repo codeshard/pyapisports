@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from pyapisports.resources import FootballResource
+from pyapisports.football.resources import FootballResource
 
 
 @pytest.fixture

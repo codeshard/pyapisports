@@ -1,4 +1,4 @@
-from pyapisports.models import League
+from pyapisports.football.models import League
 
 
 class TestLeague:

@@ -2,7 +2,7 @@ from typing import Any
 
 import httpx
 
-from pyapisports.resources import FootballResource
+from pyapisports.football.resources import FootballResource
 
 
 class ApiSportsClient:

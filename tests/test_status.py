@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pyapisports.models import (
+from pyapisports.football.models import (
     Account,
     Requests,
     Status,

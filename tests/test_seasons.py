@@ -1,4 +1,4 @@
-from pyapisports.models import SeasonsList
+from pyapisports.football.models import SeasonsList
 
 
 class TestSeasonsList:

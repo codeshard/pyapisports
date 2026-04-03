@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pyapisports.models import Status, TimezoneList
+from pyapisports.football.models import Status, TimezoneList
 
 if TYPE_CHECKING:
     from pyapisports.client import ApiSportsClient

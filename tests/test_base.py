@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 
-from pyapisports.models import Status, TimezoneList
-from pyapisports.resources import BaseResource
+from pyapisports.football.models import Status, TimezoneList
+from pyapisports.football.resources import BaseResource
 
 
 class TestBaseResource:

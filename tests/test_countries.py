@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from pyapisports.models import Country, CountryList
+from pyapisports.football.models import Country, CountryList
 
 FIXTURE = {
     "response": [
@@ -24,11 +24,6 @@ FIXTURE = {
 @pytest.fixture
 def country_list():
     return CountryList.from_api(FIXTURE)
-
-
-# ---------------------------------------------------------------------------
-# Country model
-# ---------------------------------------------------------------------------
 
 
 class TestCountry:
@@ -82,11 +77,6 @@ class TestCountry:
         assert parsed["code"] == "GB"
 
 
-# ---------------------------------------------------------------------------
-# CountryList — construction
-# ---------------------------------------------------------------------------
-
-
 class TestCountryListConstruction:
     def test_from_api_returns_country_list(self, country_list):
         assert isinstance(country_list, CountryList)
@@ -99,11 +89,6 @@ class TestCountryListConstruction:
         assert len(country_list) == 3
 
 
-# ---------------------------------------------------------------------------
-# CountryList — iteration & access
-# ---------------------------------------------------------------------------
-
-
 class TestCountryListAccess:
     def test_iterable(self, country_list):
         names = [c.name for c in country_list]
@@ -112,11 +97,6 @@ class TestCountryListAccess:
     def test_getitem(self, country_list):
         assert country_list[0].name == "England"
         assert country_list[-1].name == "Kosovo"
-
-
-# ---------------------------------------------------------------------------
-# CountryList — finders
-# ---------------------------------------------------------------------------
 
 
 class TestCountryListFinders:
@@ -147,13 +127,7 @@ class TestCountryListFinders:
         assert country_list.find_by_code("ZZ") is None
 
     def test_find_by_code_skips_null_codes(self, country_list):
-        # Kosovo has code=None, should not raise, just skip
         assert country_list.find_by_code("None") is None
-
-
-# ---------------------------------------------------------------------------
-# CountryList — serialization
-# ---------------------------------------------------------------------------
 
 
 class TestCountryListSerialization:
@@ -181,6 +155,5 @@ class TestCountryListSerialization:
         assert parsed[1]["code"] == "FR"
 
     def test_to_json_kwargs(self, country_list):
-        # indent kwarg should be forwarded correctly
         result = country_list.to_json(indent=2)
         assert "\n" in result

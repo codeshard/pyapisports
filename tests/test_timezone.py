@@ -1,4 +1,4 @@
-from pyapisports.models import TimezoneList
+from pyapisports.football.models import TimezoneList
 
 
 class TestTimezoneList:
