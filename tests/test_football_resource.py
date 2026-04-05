@@ -3,6 +3,8 @@ from datetime import date
 
 import pytest
 
+from pyapisports.exceptions import APISportsError
+
 
 class TestGetCountries:
     def test_no_params_by_default(
@@ -404,3 +406,113 @@ class TestGetVenuesList:
         result = football.get_venues(id=556)
         filtered = result.find_by_country("england")
         assert filtered.name == "Old Trafford"
+
+
+class TestGetVenuesValidation:
+    def test_raises_when_no_params(self, football):
+        with pytest.raises(
+            APISportsError, match="At least one parameter must be provided"
+        ):
+            football.get_venues()
+
+
+class TestGetTeamsInfo:
+    def test_raises_when_no_params(self, football):
+        with pytest.raises(
+            APISportsError, match="At least one parameter must be provided"
+        ):
+            football.get_teams_info()
+
+    def test_passes_id(self, football, mock_client, teams_payload):
+        mock_client._get.return_value = teams_payload
+        football.get_teams_info(id=33)
+        mock_client._get.assert_called_once_with("/teams", params={"id": 33})
+
+    def test_passes_name(self, football, mock_client, teams_payload):
+        mock_client._get.return_value = teams_payload
+        football.get_teams_info(name="Manchester United")
+        mock_client._get.assert_called_once_with(
+            "/teams", params={"name": "Manchester United"}
+        )
+
+    def test_passes_league(self, football, mock_client, teams_payload):
+        mock_client._get.return_value = teams_payload
+        football.get_teams_info(league="39")
+        mock_client._get.assert_called_once_with(
+            "/teams", params={"league": "39"}
+        )
+
+    def test_passes_season(self, football, mock_client, teams_payload):
+        mock_client._get.return_value = teams_payload
+        football.get_teams_info(season=2019)
+        mock_client._get.assert_called_once_with(
+            "/teams", params={"season": 2019}
+        )
+
+    def test_passes_multiple_params(
+        self, football, mock_client, teams_payload
+    ):
+        mock_client._get.return_value = teams_payload
+        football.get_teams_info(id=33, season=2019)
+        mock_client._get.assert_called_once_with(
+            "/teams", params={"id": 33, "season": 2019}
+        )
+
+    def test_returns_team_list(self, football, mock_client, teams_payload):
+        mock_client._get.return_value = teams_payload
+        result = football.get_teams_info(id=33)
+        assert result is not None
+
+    def test_length(self, football, mock_client, teams_payload):
+        mock_client._get.return_value = teams_payload
+        result = football.get_teams_info(id=33)
+        assert len(result) == 3
+
+    def test_iterable(self, football, mock_client, teams_payload):
+        mock_client._get.return_value = teams_payload
+        result = football.get_teams_info(id=33)
+        assert len(list(result)) == 3
+
+
+class TestGetTeamStatistics:
+    def test_passes_required_params(
+        self, football, mock_client, teams_statistics_payload
+    ):
+        mock_client._get.return_value = teams_statistics_payload
+        football.get_team_statistics(team=33, league=39, season=2019)
+        mock_client._get.assert_called_once_with(
+            "/teams/statistics",
+            params={"team": 33, "league": 39, "season": 2019},
+        )
+
+    def test_passes_date(
+        self, football, mock_client, teams_statistics_payload
+    ):
+        mock_client._get.return_value = teams_statistics_payload
+        football.get_team_statistics(
+            team=33, league=39, season=2019, date="2019-12-01"
+        )
+        mock_client._get.assert_called_once_with(
+            "/teams/statistics",
+            params={
+                "team": 33,
+                "league": 39,
+                "season": 2019,
+                "date": "2019-12-01",
+            },
+        )
+
+    def test_returns_team_statistics(
+        self, football, mock_client, teams_statistics_payload
+    ):
+        mock_client._get.return_value = teams_statistics_payload
+        result = football.get_team_statistics(team=33, league=39, season=2019)
+        assert result is not None
+
+    def test_no_date_by_default(
+        self, football, mock_client, teams_statistics_payload
+    ):
+        mock_client._get.return_value = teams_statistics_payload
+        football.get_team_statistics(team=33, league=39, season=2019)
+        call_params = mock_client._get.call_args[1]["params"]
+        assert "date" not in call_params
