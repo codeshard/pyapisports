@@ -8,6 +8,7 @@ from pyapisports.football.models import (
     LeagueList,
     SeasonsList,
     TeamList,
+    TeamStatistics,
     VenueList,
 )
 from pyapisports.football.resources import BaseResource
@@ -187,3 +188,27 @@ class FootballResource(BaseResource):
             params["season"] = season
         raw = self._client._get("/teams", params=params)
         return TeamList.from_api(raw)
+
+    def get_team_statistics(
+        self,
+        team: int,
+        league: int,
+        season: int,
+        date: str | None = None,
+    ) -> TeamStatistics:
+        """
+        Retrieve aggregated season statistics for a team in a specific league.
+
+        All three of `team`, `league`, and `season` are required by the API.
+        Pass `date` to calculate stats up to a specific point in the season
+        rather than up to today.
+        """
+        params: dict[str, Any] = {
+            "team": team,
+            "league": league,
+            "season": season,
+        }
+        if date:
+            params["date"] = date
+        raw = self._client._get("/teams/statistics", params=params)
+        return TeamStatistics.from_api(raw)
