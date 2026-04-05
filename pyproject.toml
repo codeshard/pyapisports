@@ -18,7 +18,6 @@ dev = [
     "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
     "ruff>=0.15.4",
-    "ty>=0.0.28",
 ]
 
 [tool.ruff]
@@ -39,7 +38,7 @@ docstring-code-format = true
 docstring-code-line-length = 79
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.14"
 strict = true
 warn_unused_configs = true
 warn_return_any = true
