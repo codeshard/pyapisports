@@ -8,6 +8,21 @@ repos:
       - id: trailing-whitespace
       - id: check-merge-conflict
 
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.19.1
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-requests]
+        args: [--strict]
+        exclude: tests
+
   - repo: local
     hooks:
       - id: pytest
@@ -16,24 +31,3 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
-      - id: local-ruff-check
-        name: ruff check
-        entry: uv run ruff check --force-exclude --fix --exit-non-zero-on-fix
-        require_serial: true
-        language: unsupported
-        types: [python]
-        exclude: tests/
-      - id: local-ruff-format
-        name: ruff format
-        entry: uv run ruff format --force-exclude --exit-non-zero-on-format
-        require_serial: true
-        language: unsupported
-        types: [python]
-        exclude: tests/
-      - id: local-ty
-        name: ty check
-        entry: uv run ty check src/
-        require_serial: true
-        language: unsupported
-        pass_filenames: false
-        exclude: tests/
