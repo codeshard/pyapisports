@@ -72,8 +72,6 @@ class FixturesStats:
 
 @dataclass
 class GoalMinuteSlot:
-    """Goals scored/conceded in a specific minute range."""
-
     total: Optional[int]
     percentage: Optional[str]
 
@@ -92,8 +90,6 @@ class GoalMinuteSlot:
 
 @dataclass
 class GoalMinuteBreakdown:
-    """Goals distributed across 15-minute intervals."""
-
     slot_0_15: GoalMinuteSlot
     slot_16_30: GoalMinuteSlot
     slot_31_45: GoalMinuteSlot
