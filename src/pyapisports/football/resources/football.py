@@ -8,6 +8,7 @@ from pyapisports.football.models import (
     LeagueList,
     SeasonsList,
     TeamList,
+    TeamSeasonsList,
     TeamStatistics,
     VenueList,
 )
@@ -196,13 +197,25 @@ class FootballResource(BaseResource):
         season: int,
         date: str | None = None,
     ) -> TeamStatistics:
-        """
-        Retrieve aggregated season statistics for a team in a specific league.
+        """Retrieve aggregated season statistics for a team in a specific
+        league.
 
         All three of `team`, `league`, and `season` are required by the API.
         Pass `date` to calculate stats up to a specific point in the season
         rather than up to today.
-        """
+
+        Returns:
+            TeamStatistics: Statistics of a team in relation to a given
+            competition and season.
+
+        Example:
+            >>> stats = client.resource.get_team_statistics(
+                    team=33, league=39, season=2024
+                )
+            >>> stats.to_json()
+
+        API Reference:
+            GET https://www.api-football.com/documentation-v3#tag/Teams/operation/get-teams-statistics"""
         params: dict[str, Any] = {
             "team": team,
             "league": league,
@@ -212,3 +225,21 @@ class FootballResource(BaseResource):
             params["date"] = date
         raw = self._client._get("/teams/statistics", params=params)
         return TeamStatistics.from_api(raw)
+
+    def get_team_seasons(self, team: int) -> TeamSeasonsList:
+        """Retrieve the list of seasons available for a team.
+
+        The team is is required by the API.
+
+        Returns:
+            TeamSeasonsList: List of seasons.
+
+        Example:
+            >>> seasons = client.resource.get_team_seasons(team=33)
+            >>> seasons.to_json()
+
+        API Reference:
+            GET https://www.api-football.com/documentation-v3#tag/Teams/operation/get-teams-seasons"""
+        params: dict[str, Any] = {"team": team}
+        raw = self._client._get("/teams/seasons", params=params)
+        return TeamSeasonsList.from_api(data=raw)

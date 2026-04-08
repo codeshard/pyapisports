@@ -4,6 +4,7 @@ from .coverage import Coverage, FixtureCoverage
 from .leagues import League, LeagueList
 from .seasons import Season, SeasonsList
 from .status import Account, Requests, Status, Subscription
+from .team_seasons import TeamSeasonsList
 from .team_statistics import (
     Biggest,
     BiggestScoreline,
@@ -53,6 +54,7 @@ __all__ = [
     "Subscription",
     "Team",
     "TeamList",
+    "TeamSeasonsList",
     "TeamStatistics",
     "TimezoneList",
     "Venue",
