@@ -7,6 +7,7 @@ from pyapisports.football.models import (
     CountryList,
     LeagueList,
     SeasonsList,
+    TeamCountryList,
     TeamList,
     TeamSeasonsList,
     TeamStatistics,
@@ -243,3 +244,18 @@ class FootballResource(BaseResource):
         params: dict[str, Any] = {"team": team}
         raw = self._client._get("/teams/seasons", params=params)
         return TeamSeasonsList.from_api(data=raw)
+
+    def get_team_countries(self) -> TeamCountryList:
+        """Retrieve the list of of countries available for the teams endpoint.
+
+        Returns:
+            TeamCountryList: List of countries.
+
+        Example:
+            >>> countries = client.resource.get_team_countries()
+            >>> countries.to_json()
+
+        API Reference:
+            GET https://api-sports.io/documentation/football/v3#tag/Teams/operation/get-teams-countries"""
+        raw = self._client._get("/teams/countries")
+        return TeamCountryList.from_api(raw)
