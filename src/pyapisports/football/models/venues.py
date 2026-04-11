@@ -78,7 +78,9 @@ class VenueList(BaseList[Venue]):
     def filter_by_param(self, search: str) -> "VenueList":
         search = search.lower()
         return VenueList(
-            items=[venue for venue in self.items if venue.name == search]
+            items=[
+                venue for venue in self.items if venue.name.lower() == search
+            ]
         )
 
     def to_list(self) -> list[dict[str, Any]]:
