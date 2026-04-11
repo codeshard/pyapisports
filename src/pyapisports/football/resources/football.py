@@ -7,6 +7,7 @@ from pyapisports.football.models import (
     CountryList,
     LeagueList,
     SeasonsList,
+    Standings,
     TeamCountryList,
     TeamInfoList,
     TeamSeasonsList,
@@ -259,3 +260,36 @@ class FootballResource(BaseResource):
             GET https://api-sports.io/documentation/football/v3#tag/Teams/operation/get-teams-countries"""
         raw = self._client._get("/teams/countries")
         return TeamCountryList.from_api(raw)
+
+    def get_standings(
+        self,
+        league: int,
+        season: int,
+        team: int | None = None,
+    ) -> Standings:
+        """
+        Retrieve the standings table(s) for a league and season.
+
+        Args:
+            league:  League ID (required).
+            season:  Season year, e.g. 2024 (required).
+            team:    Optional team ID to filter down to a single team's row.
+
+        Returns:
+            Standings: Contains one or more StandingsTable objects.
+            Single-table leagues (Premier League, La Liga, etc.) expose a
+            `.table` shortcut. Multi-group competitions (Champions League,
+            World Cup) expose the full `.tables` list.
+
+        Example:
+            >>> stands = client.football.get_standings(league=39, season=2024)
+            >>> stands.to_json()
+
+        API reference:
+            GET https://api-sports.io/documentation/football/v3#tag/Standings/operation/get-standings
+        """
+        params: dict[str, Any] = {"league": league, "season": season}
+        if team:
+            params["team"] = team
+        raw = self._client._get("/standings", params=params)
+        return Standings.from_api(raw)
