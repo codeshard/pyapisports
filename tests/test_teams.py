@@ -257,3 +257,121 @@ class TestTeamListSerialization:
         parsed = json.loads(team_list.to_json())
         az_entry = next(t for t in parsed if t["team"]["id"] == 99)
         assert az_entry["venue"] is None
+
+
+class TestTeamSeasonsList:
+    def test_from_api(self, seasons_list_data):
+        from pyapisports.football.models import TeamSeasonsList
+
+        sl = TeamSeasonsList.from_api(seasons_list_data)
+        assert sl.seasons == [
+            2008,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+        ]
+
+    def test_iter(self, seasons_list_data):
+        from pyapisports.football.models import TeamSeasonsList
+
+        sl = TeamSeasonsList.from_api(seasons_list_data)
+        assert list(sl) == [
+            2008,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+        ]
+
+    def test_len(self, seasons_list_data):
+        from pyapisports.football.models import TeamSeasonsList
+
+        sl = TeamSeasonsList.from_api(seasons_list_data)
+        assert len(sl) == 12
+
+    def test_contains(self, seasons_list_data):
+        from pyapisports.football.models import TeamSeasonsList
+
+        sl = TeamSeasonsList.from_api(seasons_list_data)
+        assert 2018 in sl
+        assert 1900 not in sl
+
+    def test_to_list(self, seasons_list_data):
+        from pyapisports.football.models import TeamSeasonsList
+
+        sl = TeamSeasonsList.from_api(seasons_list_data)
+        assert isinstance(sl.to_list(), list)
+        assert len(sl.to_list()) == 12
+
+    def test_to_json(self, seasons_list_data):
+        import json
+
+        from pyapisports.football.models import TeamSeasonsList
+
+        sl = TeamSeasonsList.from_api(seasons_list_data)
+        parsed = json.loads(sl.to_json())
+        assert 2020 in parsed
+
+
+class TestTeamCountryList:
+    def test_from_api(self, country_list_data):
+        from pyapisports.football.models import TeamCountryList
+
+        cl = TeamCountryList.from_api(country_list_data)
+        assert len(cl.countries) == 3
+
+    def test_iter(self, country_list_data):
+        from pyapisports.football.models import Country, TeamCountryList
+
+        cl = TeamCountryList.from_api(country_list_data)
+        countries = list(cl)
+        assert len(countries) == 3
+        assert all(isinstance(c, Country) for c in countries)
+
+    def test_len(self, country_list_data):
+        from pyapisports.football.models import TeamCountryList
+
+        cl = TeamCountryList.from_api(country_list_data)
+        assert len(cl) == 3
+
+    def test_contains(self, country_list_data):
+        from pyapisports.football.models import Country, TeamCountryList
+
+        cl = TeamCountryList.from_api(country_list_data)
+        england = Country.from_api(country_list_data["response"][0])
+        assert england in cl
+        fake = Country.from_api({"name": "Fake", "code": "FK", "flag": None})
+        assert fake not in cl
+
+    def test_to_list(self, country_list_data):
+        from pyapisports.football.models import TeamCountryList
+
+        cl = TeamCountryList.from_api(country_list_data)
+        result = cl.to_list()
+        assert isinstance(result, list)
+        assert len(result) == 3
+
+    def test_to_json(self, country_list_data):
+        import json
+
+        from pyapisports.football.models import TeamCountryList
+
+        cl = TeamCountryList.from_api(country_list_data)
+        parsed = json.loads(cl.to_json())
+        assert isinstance(parsed, list)
+        assert len(parsed) == 3

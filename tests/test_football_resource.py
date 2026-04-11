@@ -516,3 +516,85 @@ class TestGetTeamStatistics:
         football.get_team_statistics(team=33, league=39, season=2019)
         call_params = mock_client._get.call_args[1]["params"]
         assert "date" not in call_params
+
+
+class TestGetVenuesParams:
+    def test_passes_city(self, football, mock_client, venues_payload):
+        mock_client._get.return_value = venues_payload
+        football.get_venues(city="Manchester")
+        mock_client._get.assert_called_once_with(
+            "/venues", params={"city": "Manchester"}
+        )
+
+    def test_passes_country(self, football, mock_client, venues_payload):
+        mock_client._get.return_value = venues_payload
+        football.get_venues(country="England")
+        mock_client._get.assert_called_once_with(
+            "/venues", params={"country": "England"}
+        )
+
+
+class TestGetTeamSeasons:
+    def test_passes_team(self, football, mock_client, seasons_list_data):
+        mock_client._get.return_value = seasons_list_data
+        football.get_team_seasons(team=33)
+        mock_client._get.assert_called_once_with(
+            "/teams/seasons", params={"team": 33}
+        )
+
+    def test_returns_team_seasons_list(
+        self, football, mock_client, seasons_list_data
+    ):
+        mock_client._get.return_value = seasons_list_data
+        result = football.get_team_seasons(team=33)
+        assert result is not None
+        assert 2020 in result
+
+
+class TestGetTeamCountries:
+    def test_calls_correct_endpoint(self, football, mock_client):
+        mock_client._get.return_value = {"response": []}
+        football.get_team_countries()
+        mock_client._get.assert_called_once_with("/teams/countries")
+
+    def test_returns_team_country_list(self, football, mock_client):
+        mock_client._get.return_value = {
+            "response": [
+                {
+                    "name": "England",
+                    "code": "GB",
+                    "flag": "https://example.com/gb.svg",
+                },
+                {
+                    "name": "France",
+                    "code": "FR",
+                    "flag": "https://example.com/fr.svg",
+                },
+            ]
+        }
+        result = football.get_team_countries()
+        assert result is not None
+        assert len(result) == 2
+
+
+class TestGetStandings:
+    def test_passes_league_and_season(
+        self, football, mock_client, standings_payload
+    ):
+        mock_client._get.return_value = standings_payload
+        football.get_standings(league=39, season=2024)
+        mock_client._get.assert_called_once_with(
+            "/standings", params={"league": 39, "season": 2024}
+        )
+
+    def test_passes_team_param(self, football, mock_client, standings_payload):
+        mock_client._get.return_value = standings_payload
+        football.get_standings(league=39, season=2024, team=50)
+        mock_client._get.assert_called_once_with(
+            "/standings", params={"league": 39, "season": 2024, "team": 50}
+        )
+
+    def test_returns_standings(self, football, mock_client, standings_payload):
+        mock_client._get.return_value = standings_payload
+        result = football.get_standings(league=39, season=2024)
+        assert result is not None

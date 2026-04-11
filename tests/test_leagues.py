@@ -1,4 +1,8 @@
-from pyapisports.football.models import League
+import json
+
+import pytest
+
+from pyapisports.football.models import League, LeagueList
 
 
 class TestLeague:
@@ -54,3 +58,18 @@ class TestLeague:
 
         parsed = json.loads(c.to_json())
         assert parsed["league"]["name"] == "Premier League"
+
+
+class TestLeagueList:
+    def test_to_list(self, leagues_payload):
+        leagues = LeagueList.from_api(leagues_payload)
+        result = leagues.to_list()
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert result[0]["league"]["id"] == 39
+
+    def test_to_json(self, leagues_payload):
+        leagues = LeagueList.from_api(leagues_payload)
+        parsed = json.loads(leagues.to_json())
+        assert isinstance(parsed, list)
+        assert len(parsed) == 1
