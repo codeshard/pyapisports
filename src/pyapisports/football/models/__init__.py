@@ -4,9 +4,7 @@ from .coverage import Coverage, FixtureCoverage
 from .leagues import League, LeagueList
 from .seasons import Season, SeasonsList
 from .status import Account, Requests, Status, Subscription
-from .team_countries import TeamCountryList
-from .team_seasons import TeamSeasonsList
-from .team_statistics import (
+from .teams import (
     Biggest,
     BiggestScoreline,
     CardStats,
@@ -20,9 +18,12 @@ from .team_statistics import (
     LineupEntry,
     PenaltyStat,
     PenaltyStats,
+    TeamCountryList,
+    TeamInfo,
+    TeamInfoList,
+    TeamSeasonsList,
     TeamStatistics,
 )
-from .teams import Team, TeamList
 from .timezone import TimezoneList
 from .venues import Venue, VenueList
 
@@ -53,9 +54,9 @@ __all__ = [
     "SeasonsList",
     "Status",
     "Subscription",
-    "Team",
+    "TeamInfo",
     "TeamCountryList",
-    "TeamList",
+    "TeamInfoList",
     "TeamSeasonsList",
     "TeamStatistics",
     "TimezoneList",

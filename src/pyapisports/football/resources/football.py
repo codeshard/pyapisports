@@ -8,7 +8,7 @@ from pyapisports.football.models import (
     LeagueList,
     SeasonsList,
     TeamCountryList,
-    TeamList,
+    TeamInfoList,
     TeamSeasonsList,
     TeamStatistics,
     VenueList,
@@ -161,13 +161,13 @@ class FootballResource(BaseResource):
         code: str | None = None,
         venue_id: int | None = None,
         search: str | None = None,
-    ) -> TeamList:
+    ) -> TeamInfoList:
         """Retrieve a  list of available teams.
         The team id are unique in the API.
         At least one parameter is required.
 
         Returns:
-            TeamList: List of available teams.
+            TeamInfoList: List of available teams.
 
         Example:
             >>> teams = client.resource.get_teams(id=33)
@@ -189,7 +189,7 @@ class FootballResource(BaseResource):
         if season:
             params["season"] = season
         raw = self._client._get("/teams", params=params)
-        return TeamList.from_api(raw)
+        return TeamInfoList.from_api(raw)
 
     def get_team_statistics(
         self,

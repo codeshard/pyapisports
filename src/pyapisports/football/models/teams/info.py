@@ -2,12 +2,12 @@ import json
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from .base import BaseList
-from .venues import Venue
+from pyapisports.football.models.base import BaseList
+from pyapisports.football.models.venues import Venue
 
 
 @dataclass
-class Team:
+class TeamInfo:
     id: int
     name: str
     code: Optional[str]
@@ -18,7 +18,7 @@ class Team:
     venue: Optional[Venue]
 
     @classmethod
-    def from_api(cls, data: dict[str, Any]) -> "Team":
+    def from_api(cls, data: dict[str, Any]) -> "TeamInfo":
         venue_data = data.get("venue")
         return cls(
             id=data["team"]["id"],
@@ -50,23 +50,25 @@ class Team:
 
 
 @dataclass
-class TeamList(BaseList[Team]):
+class TeamInfoList(BaseList[TeamInfo]):
     @classmethod
-    def from_api(cls, data: dict[str, Any]) -> "TeamList":
-        return cls(items=[Team.from_api(team) for team in data["response"]])
+    def from_api(cls, data: dict[str, Any]) -> "TeamInfoList":
+        return cls(
+            items=[TeamInfo.from_api(team) for team in data["response"]]
+        )
 
-    def find_by_id(self, id: int) -> Optional[Team]:
+    def find_by_id(self, id: int) -> Optional[TeamInfo]:
         return next((team for team in self.items if team.id == id), None)
 
-    def find_by_name(self, name: str) -> Optional[Team]:
+    def find_by_name(self, name: str) -> Optional[TeamInfo]:
         name = name.lower()
         return next(
             (team for team in self.items if team.name.lower() == name),
             None,
         )
 
-    def filter_by_country(self, country: str) -> "TeamList":
-        return TeamList(
+    def filter_by_country(self, country: str) -> "TeamInfoList":
+        return TeamInfoList(
             items=[
                 team
                 for team in self.items
@@ -74,13 +76,13 @@ class TeamList(BaseList[Team]):
             ]
         )
 
-    def filter_by_code(self, code: str) -> "TeamList":
-        return TeamList(
+    def filter_by_code(self, code: str) -> "TeamInfoList":
+        return TeamInfoList(
             items=[team for team in self.items if team.code == code.upper()]
         )
 
-    def filter_by_venue(self, venue_id: int) -> "TeamList":
-        return TeamList(
+    def filter_by_venue(self, venue_id: int) -> "TeamInfoList":
+        return TeamInfoList(
             items=[
                 team
                 for team in self.items
@@ -88,9 +90,9 @@ class TeamList(BaseList[Team]):
             ]
         )
 
-    def search(self, query: str) -> "TeamList":
+    def search(self, query: str) -> "TeamInfoList":
         query = query.lower()
-        return TeamList(
+        return TeamInfoList(
             items=[team for team in self.items if query in team.name.lower()]
         )
 
