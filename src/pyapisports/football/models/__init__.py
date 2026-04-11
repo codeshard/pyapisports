@@ -3,7 +3,7 @@ from .country import Country, CountryList
 from .coverage import Coverage, FixtureCoverage
 from .leagues import League, LeagueList
 from .seasons import Season, SeasonsList
-from .standings import Standings
+from .standings import StandingEntry, StandingRecord, Standings, StandingsTable
 from .status import Account, Requests, Status, Subscription
 from .teams import (
     Biggest,
@@ -54,6 +54,9 @@ __all__ = [
     "Season",
     "SeasonsList",
     "Standings",
+    "StandingEntry",
+    "StandingRecord",
+    "StandingsTable",
     "Status",
     "Subscription",
     "TeamInfo",
