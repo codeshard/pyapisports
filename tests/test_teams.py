@@ -2,22 +2,22 @@ import json
 
 import pytest
 
-from pyapisports.football.models import Team, TeamList, Venue
+from pyapisports.football.models import TeamInfo, TeamInfoList, Venue
 
 
 @pytest.fixture
-def team_list(teams_payload) -> TeamList:
-    return TeamList.from_api(teams_payload)
+def team_list(teams_payload) -> TeamInfoList:
+    return TeamInfoList.from_api(teams_payload)
 
 
 @pytest.fixture
-def man_utd(teams_payload) -> Team:
-    return Team.from_api(teams_payload["response"][0])
+def man_utd(teams_payload) -> TeamInfo:
+    return TeamInfo.from_api(teams_payload["response"][0])
 
 
 @pytest.fixture
-def az(teams_payload) -> Team:
-    return Team.from_api(teams_payload["response"][2])
+def az(teams_payload) -> TeamInfo:
+    return TeamInfo.from_api(teams_payload["response"][2])
 
 
 class TestTeamFromApi:
@@ -128,10 +128,10 @@ class TestTeamListFromApi:
 
     def test_items_are_team_instances(self, team_list):
         for team in team_list:
-            assert isinstance(team, Team)
+            assert isinstance(team, TeamInfo)
 
     def test_empty_response(self):
-        result = TeamList.from_api({"response": []})
+        result = TeamInfoList.from_api({"response": []})
         assert len(result) == 0
 
 
@@ -225,10 +225,10 @@ class TestTeamListFilters:
         assert len(team_list.search("barcelona")) == 0
 
     def test_search_returns_team_list(self, team_list):
-        assert isinstance(team_list.search("liverpool"), TeamList)
+        assert isinstance(team_list.search("liverpool"), TeamInfoList)
 
     def test_filter_returns_team_list(self, team_list):
-        assert isinstance(team_list.filter_by_country("England"), TeamList)
+        assert isinstance(team_list.filter_by_country("England"), TeamInfoList)
 
 
 class TestTeamListSerialization:
