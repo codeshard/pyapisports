@@ -478,3 +478,346 @@ def teams_statistics_payload():
             },
         },
     }
+
+
+@pytest.fixture
+def standings_payload():
+    return {
+        "get": "standings",
+        "parameters": {"league": "39", "season": "2024"},
+        "errors": [],
+        "results": 1,
+        "paging": {"current": 1, "total": 1},
+        "response": [
+            {
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "standings": [
+                        [
+                            {
+                                "rank": 1,
+                                "team": {
+                                    "id": 50,
+                                    "name": "Manchester City",
+                                    "logo": "https://media.api-sports.io/football/teams/50.png",
+                                },
+                                "points": 91,
+                                "goalsDiff": 62,
+                                "group": "Premier League",
+                                "form": "WWDWW",
+                                "status": "same",
+                                "description": "Promotion - Champions League (Group Stage)",
+                                "all": {
+                                    "played": 38,
+                                    "win": 28,
+                                    "draw": 7,
+                                    "lose": 3,
+                                    "goals": {"for": 96, "against": 34},
+                                },
+                                "home": {
+                                    "played": 19,
+                                    "win": 15,
+                                    "draw": 3,
+                                    "lose": 1,
+                                    "goals": {"for": 56, "against": 18},
+                                },
+                                "away": {
+                                    "played": 19,
+                                    "win": 13,
+                                    "draw": 4,
+                                    "lose": 2,
+                                    "goals": {"for": 40, "against": 16},
+                                },
+                                "update": "2024-05-19T00:00:00+00:00",
+                            },
+                            {
+                                "rank": 2,
+                                "team": {
+                                    "id": 42,
+                                    "name": "Arsenal",
+                                    "logo": "https://media.api-sports.io/football/teams/42.png",
+                                },
+                                "points": 89,
+                                "goalsDiff": 55,
+                                "group": "Premier League",
+                                "form": "WWWDW",
+                                "status": "up",
+                                "description": "Promotion - Champions League (Group Stage)",
+                                "all": {
+                                    "played": 38,
+                                    "win": 28,
+                                    "draw": 5,
+                                    "lose": 5,
+                                    "goals": {"for": 91, "against": 36},
+                                },
+                                "home": {
+                                    "played": 19,
+                                    "win": 15,
+                                    "draw": 2,
+                                    "lose": 2,
+                                    "goals": {"for": 50, "against": 19},
+                                },
+                                "away": {
+                                    "played": 19,
+                                    "win": 13,
+                                    "draw": 3,
+                                    "lose": 3,
+                                    "goals": {"for": 41, "against": 17},
+                                },
+                                "update": "2024-05-19T00:00:00+00:00",
+                            },
+                            {
+                                "rank": 3,
+                                "team": {
+                                    "id": 33,
+                                    "name": "Manchester United",
+                                    "logo": "https://media.api-sports.io/football/teams/33.png",
+                                },
+                                "points": 60,
+                                "goalsDiff": 3,
+                                "group": "Premier League",
+                                "form": "WDLWL",
+                                "status": "down",
+                                "description": "Promotion - Europa League (Group Stage)",
+                                "all": {
+                                    "played": 38,
+                                    "win": 18,
+                                    "draw": 6,
+                                    "lose": 14,
+                                    "goals": {"for": 57, "against": 54},
+                                },
+                                "home": {
+                                    "played": 19,
+                                    "win": 11,
+                                    "draw": 3,
+                                    "lose": 5,
+                                    "goals": {"for": 33, "against": 26},
+                                },
+                                "away": {
+                                    "played": 19,
+                                    "win": 7,
+                                    "draw": 3,
+                                    "lose": 9,
+                                    "goals": {"for": 24, "against": 28},
+                                },
+                                "update": "2024-05-19T00:00:00+00:00",
+                            },
+                            {
+                                "rank": 18,
+                                "team": {
+                                    "id": 63,
+                                    "name": "Leeds United",
+                                    "logo": "https://media.api-sports.io/football/teams/63.png",
+                                },
+                                "points": 31,
+                                "goalsDiff": -23,
+                                "group": "Premier League",
+                                "form": "LLDLL",
+                                "status": "down",
+                                "description": "Relegation - Championship",
+                                "all": {
+                                    "played": 38,
+                                    "win": 7,
+                                    "draw": 10,
+                                    "lose": 21,
+                                    "goals": {"for": 48, "against": 71},
+                                },
+                                "home": {
+                                    "played": 19,
+                                    "win": 5,
+                                    "draw": 5,
+                                    "lose": 9,
+                                    "goals": {"for": 28, "against": 40},
+                                },
+                                "away": {
+                                    "played": 19,
+                                    "win": 2,
+                                    "draw": 5,
+                                    "lose": 12,
+                                    "goals": {"for": 20, "against": 31},
+                                },
+                                "update": "2024-05-19T00:00:00+00:00",
+                            },
+                            {
+                                "rank": 19,
+                                "team": {
+                                    "id": 55,
+                                    "name": "Brentford",
+                                    "logo": "https://media.api-sports.io/football/teams/55.png",
+                                },
+                                "points": 28,
+                                "goalsDiff": -28,
+                                "group": "Premier League",
+                                "form": "LLLLD",
+                                "status": "same",
+                                "description": "Relegation - Championship",
+                                "all": {
+                                    "played": 38,
+                                    "win": 6,
+                                    "draw": 10,
+                                    "lose": 22,
+                                    "goals": {"for": 45, "against": 73},
+                                },
+                                "home": {
+                                    "played": 19,
+                                    "win": 4,
+                                    "draw": 5,
+                                    "lose": 10,
+                                    "goals": {"for": 26, "against": 40},
+                                },
+                                "away": {
+                                    "played": 19,
+                                    "win": 2,
+                                    "draw": 5,
+                                    "lose": 12,
+                                    "goals": {"for": 19, "against": 33},
+                                },
+                                "update": "2024-05-19T00:00:00+00:00",
+                            },
+                            {
+                                "rank": 20,
+                                "team": {
+                                    "id": 57,
+                                    "name": "Sheffield Utd",
+                                    "logo": "https://media.api-sports.io/football/teams/57.png",
+                                },
+                                "points": 16,
+                                "goalsDiff": -69,
+                                "group": "Premier League",
+                                "form": "LLLLL",
+                                "status": "down",
+                                "description": "Relegation - Championship",
+                                "all": {
+                                    "played": 38,
+                                    "win": 3,
+                                    "draw": 7,
+                                    "lose": 28,
+                                    "goals": {"for": 35, "against": 104},
+                                },
+                                "home": {
+                                    "played": 19,
+                                    "win": 2,
+                                    "draw": 4,
+                                    "lose": 13,
+                                    "goals": {"for": 20, "against": 55},
+                                },
+                                "away": {
+                                    "played": 19,
+                                    "win": 1,
+                                    "draw": 3,
+                                    "lose": 15,
+                                    "goals": {"for": 15, "against": 49},
+                                },
+                                "update": "2024-05-19T00:00:00+00:00",
+                            },
+                        ]
+                    ],
+                }
+            }
+        ],
+    }
+
+
+@pytest.fixture
+def standings_multi_payload():
+    return {
+        "get": "standings",
+        "parameters": {"league": "2", "season": "2024"},
+        "errors": [],
+        "results": 1,
+        "response": [
+            {
+                "league": {
+                    "id": 2,
+                    "name": "UEFA Champions League",
+                    "country": "World",
+                    "logo": "https://media.api-sports.io/football/leagues/2.png",
+                    "flag": None,
+                    "season": 2024,
+                    "standings": [
+                        [
+                            {
+                                "rank": 1,
+                                "team": {
+                                    "id": 50,
+                                    "name": "Manchester City",
+                                    "logo": "https://media.api-sports.io/football/teams/50.png",
+                                },
+                                "points": 12,
+                                "goalsDiff": 8,
+                                "group": "Group A",
+                                "form": "WWWW",
+                                "status": "same",
+                                "description": "Promotion - Champions League (Round of 16)",
+                                "all": {
+                                    "played": 4,
+                                    "win": 4,
+                                    "draw": 0,
+                                    "lose": 0,
+                                    "goals": {"for": 12, "against": 4},
+                                },
+                                "home": {
+                                    "played": 2,
+                                    "win": 2,
+                                    "draw": 0,
+                                    "lose": 0,
+                                    "goals": {"for": 6, "against": 2},
+                                },
+                                "away": {
+                                    "played": 2,
+                                    "win": 2,
+                                    "draw": 0,
+                                    "lose": 0,
+                                    "goals": {"for": 6, "against": 2},
+                                },
+                                "update": "2024-11-01T00:00:00+00:00",
+                            }
+                        ],
+                        [
+                            {
+                                "rank": 1,
+                                "team": {
+                                    "id": 42,
+                                    "name": "Arsenal",
+                                    "logo": "https://media.api-sports.io/football/teams/42.png",
+                                },
+                                "points": 10,
+                                "goalsDiff": 5,
+                                "group": "Group B",
+                                "form": "WWDW",
+                                "status": "same",
+                                "description": "Promotion - Champions League (Round of 16)",
+                                "all": {
+                                    "played": 4,
+                                    "win": 3,
+                                    "draw": 1,
+                                    "lose": 0,
+                                    "goals": {"for": 9, "against": 4},
+                                },
+                                "home": {
+                                    "played": 2,
+                                    "win": 2,
+                                    "draw": 0,
+                                    "lose": 0,
+                                    "goals": {"for": 5, "against": 2},
+                                },
+                                "away": {
+                                    "played": 2,
+                                    "win": 1,
+                                    "draw": 1,
+                                    "lose": 0,
+                                    "goals": {"for": 4, "against": 2},
+                                },
+                                "update": "2024-11-01T00:00:00+00:00",
+                            }
+                        ],
+                    ],
+                }
+            }
+        ],
+    }
