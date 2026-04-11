@@ -16,15 +16,6 @@ def football(mock_client):
 
 
 @pytest.fixture
-def country_data():
-    return {
-        "name": "England",
-        "code": "GB",
-        "flag": "https://flag.example.com/gb.svg",
-    }
-
-
-@pytest.fixture
 def country_list_data():
     return {
         "response": [
