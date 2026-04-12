@@ -598,3 +598,78 @@ class TestGetStandings:
         mock_client._get.return_value = standings_payload
         result = football.get_standings(league=39, season=2024)
         assert result is not None
+
+
+class TestGetRounds:
+    def test_passes_league_and_season(
+        self, football, mock_client, rounds_payload
+    ):
+        mock_client._get.return_value = rounds_payload
+        football.get_rounds(league=39, season=2024)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/rounds", params={"league": 39, "season": 2024}
+        )
+
+    def test_passes_current(self, football, mock_client, rounds_payload):
+        mock_client._get.return_value = rounds_payload
+        football.get_rounds(league=39, season=2024, current=True)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/rounds",
+            params={"league": 39, "season": 2024, "current": True},
+        )
+
+    def test_passes_dates(self, football, mock_client, rounds_payload):
+        mock_client._get.return_value = rounds_payload
+        football.get_rounds(
+            league=39, season=2024, dates="2024-01-01,2024-01-31"
+        )
+        mock_client._get.assert_called_once_with(
+            "/fixtures/rounds",
+            params={
+                "league": 39,
+                "season": 2024,
+                "dates": "2024-01-01,2024-01-31",
+            },
+        )
+
+    def test_passes_timezone(self, football, mock_client, rounds_payload):
+        mock_client._get.return_value = rounds_payload
+        football.get_rounds(
+            league=39, season=2024, timezone="America/New_York"
+        )
+        mock_client._get.assert_called_once_with(
+            "/fixtures/rounds",
+            params={
+                "league": 39,
+                "season": 2024,
+                "timezone": "America/New_York",
+            },
+        )
+
+    def test_passes_all_optional_params(
+        self, football, mock_client, rounds_payload
+    ):
+        mock_client._get.return_value = rounds_payload
+        football.get_rounds(
+            league=39,
+            season=2024,
+            current=True,
+            dates="2024-01-01,2024-01-31",
+            timezone="America/New_York",
+        )
+        mock_client._get.assert_called_once_with(
+            "/fixtures/rounds",
+            params={
+                "league": 39,
+                "season": 2024,
+                "current": True,
+                "dates": "2024-01-01,2024-01-31",
+                "timezone": "America/New_York",
+            },
+        )
+
+    def test_returns_rounds_list(self, football, mock_client, rounds_payload):
+        mock_client._get.return_value = rounds_payload
+        result = football.get_rounds(league=39, season=2024)
+        assert result is not None
+        assert len(result) == 6

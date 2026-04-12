@@ -715,6 +715,35 @@ def standings_payload():
 
 
 @pytest.fixture
+def rounds_payload():
+    return {
+        "get": "fixtures/rounds",
+        "parameters": {"league": "39", "season": "2024"},
+        "errors": [],
+        "results": 6,
+        "response": [
+            "1st Round",
+            "2nd Round",
+            "3rd Round",
+            "4th Round",
+            "5th Round",
+            "6th Round",
+        ],
+    }
+
+
+@pytest.fixture
+def rounds_empty_payload():
+    return {
+        "get": "fixtures/rounds",
+        "parameters": {"league": "39", "season": "2024"},
+        "errors": [],
+        "results": 0,
+        "response": [],
+    }
+
+
+@pytest.fixture
 def standings_multi_payload():
     return {
         "get": "standings",
