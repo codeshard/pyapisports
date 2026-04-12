@@ -1,6 +1,7 @@
 from .base import BaseList
 from .country import Country, CountryList
 from .coverage import Coverage, FixtureCoverage
+from .fixtures import RoundsList
 from .leagues import League, LeagueList
 from .seasons import Season, SeasonsList
 from .standings import StandingEntry, StandingRecord, Standings, StandingsTable
@@ -51,6 +52,7 @@ __all__ = [
     "PenaltyStat",
     "PenaltyStats",
     "Requests",
+    "RoundsList",
     "Season",
     "SeasonsList",
     "Standings",
