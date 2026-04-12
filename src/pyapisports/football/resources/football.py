@@ -6,6 +6,7 @@ from pyapisports.exceptions import APISportsError
 from pyapisports.football.models import (
     CountryList,
     LeagueList,
+    RoundsList,
     SeasonsList,
     Standings,
     TeamCountryList,
@@ -293,3 +294,41 @@ class FootballResource(BaseResource):
             params["team"] = team
         raw = self._client._get("/standings", params=params)
         return Standings.from_api(raw)
+
+    def get_rounds(
+        self,
+        league: int,
+        season: int,
+        current: bool = False,
+        dates: bool = False,
+        timezone: str | None = None,
+    ) -> RoundsList:
+        """
+        Retrieve the rounds for a league or a cup.
+
+        Args:
+            league:  League ID (required).
+            season:  Season year, e.g. 2024 (required).
+            current: The current round only (optional).
+            dates:   Add the dates of each round in the response (Optional).
+
+        Returns:
+            RoundsList: Contains one or more rounds for a league or a cup.
+
+        Example:
+            >>> rounds = client.football.get_rounds(league=39, season=2019)
+
+            >>> rounds.to_json()
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures-rounds
+        """
+        params: dict[str, Any] = {"league": league, "season": season}
+        if current:
+            params["current"] = current
+        if dates:
+            params["dates"] = dates
+        if timezone:
+            params["timezone"] = timezone
+        raw = self._client._get("/fixtures/rounds", params=params)
+        return RoundsList.from_api(raw)
