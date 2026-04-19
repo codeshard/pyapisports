@@ -9,24 +9,24 @@ from .base import BaseList
 class Venue:
     id: int
     name: str
-    address: str
+    address: Optional[str]
     city: str
     country: Optional[str]
-    capacity: int
-    surface: str
-    image: str
+    capacity: Optional[int]
+    surface: Optional[str]
+    image: Optional[str]
 
     @classmethod
     def from_api(cls, data: dict[str, Any]) -> "Venue":
         return cls(
             id=data["id"],
             name=data["name"],
-            address=data["address"],
+            address=data.get("address"),
             city=data["city"],
             country=data.get("country"),
-            capacity=data["capacity"],
-            surface=data["surface"],
-            image=data["image"],
+            capacity=data.get("capacity"),
+            surface=data.get("surface"),
+            image=data.get("image"),
         )
 
     def to_dict(self) -> dict[str, Any]:
