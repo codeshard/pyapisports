@@ -673,3 +673,184 @@ class TestGetRounds:
         result = football.get_rounds(league=39, season=2024)
         assert result is not None
         assert len(result) == 6
+
+
+class TestGetFixtures:
+    def test_passes_id(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(id=868078)
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"id": 868078}
+        )
+
+    def test_passes_ids(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(ids=[868078, 868079, 868080])
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"ids": "868078-868079-868080"}
+        )
+
+    def test_passes_live(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(live="all")
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"live": "all"}
+        )
+
+    def test_passes_date(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(date="2024-12-01")
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"date": "2024-12-01"}
+        )
+
+    def test_passes_league(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(league=39)
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"league": 39}
+        )
+
+    def test_passes_season(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(season=2024)
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"season": 2024}
+        )
+
+    def test_passes_team(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(team=33)
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"team": 33}
+        )
+
+    def test_passes_round(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(round="Regular Season - 14")
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"round": "Regular Season - 14"}
+        )
+
+    def test_passes_status(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(status="FT")
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"status": "FT"}
+        )
+
+    def test_passes_from_date(
+        self, football, mock_client, fixture_list_payload
+    ):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(from_date="2024-12-01")
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"from": "2024-12-01"}
+        )
+
+    def test_passes_to_date(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(to_date="2024-12-31")
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"to": "2024-12-31"}
+        )
+
+    def test_passes_last(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(last=5)
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"last": 5}
+        )
+
+    def test_passes_next(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(next=10)
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"next": 10}
+        )
+
+    def test_passes_timezone(
+        self, football, mock_client, fixture_list_payload
+    ):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(timezone="America/New_York")
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"timezone": "America/New_York"}
+        )
+
+    def test_passes_all_params(
+        self, football, mock_client, fixture_list_payload
+    ):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixtures(
+            id=868078,
+            live="all",
+            date="2024-12-01",
+            league=39,
+            season=2024,
+            team=33,
+            round="Regular Season - 14",
+            status="FT",
+            from_date="2024-12-01",
+            to_date="2024-12-31",
+            last=5,
+            next=10,
+            timezone="UTC",
+        )
+        mock_client._get.assert_called_once_with(
+            "/fixtures",
+            params={
+                "id": 868078,
+                "live": "all",
+                "date": "2024-12-01",
+                "league": 39,
+                "season": 2024,
+                "team": 33,
+                "round": "Regular Season - 14",
+                "status": "FT",
+                "from": "2024-12-01",
+                "to": "2024-12-31",
+                "last": 5,
+                "next": 10,
+                "timezone": "UTC",
+            },
+        )
+
+    def test_returns_fixture_list(
+        self, football, mock_client, fixture_list_payload
+    ):
+        mock_client._get.return_value = fixture_list_payload
+        result = football.get_fixtures(id=868078)
+        assert result is not None
+        assert len(result) == 1
+
+
+class TestGetFixture:
+    def test_passes_id(self, football, mock_client, fixture_list_payload):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixture(id=868078)
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"id": 868078}
+        )
+
+    def test_passes_timezone(
+        self, football, mock_client, fixture_list_payload
+    ):
+        mock_client._get.return_value = fixture_list_payload
+        football.get_fixture(id=868078, timezone="America/New_York")
+        mock_client._get.assert_called_once_with(
+            "/fixtures", params={"id": 868078, "timezone": "America/New_York"}
+        )
+
+    def test_returns_fixture(
+        self, football, mock_client, fixture_list_payload
+    ):
+        mock_client._get.return_value = fixture_list_payload
+        result = football.get_fixture(id=868078)
+        assert result is not None
+        assert result.id == 868078
+
+    def test_raises_when_not_found(self, football, mock_client):
+        mock_client._get.return_value = {"response": []}
+        with pytest.raises(ValueError, match="Fixture 999 not found"):
+            football.get_fixture(id=999)

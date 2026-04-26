@@ -841,3 +841,356 @@ def standings_multi_payload():
             }
         ],
     }
+
+
+@pytest.fixture
+def fixture_list_payload():
+    return {
+        "get": "fixtures",
+        "parameters": {"id": "868078"},
+        "errors": [],
+        "results": 1,
+        "paging": {"current": 1, "total": 1},
+        "response": [
+            {
+                "fixture": {
+                    "id": 868078,
+                    "referee": "Anthony Taylor",
+                    "timezone": "America/New_York",
+                    "date": "2024-12-01T15:00:00+00:00",
+                    "timestamp": 1733068800,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Match Finished",
+                        "short": "FT",
+                        "elapsed": 90,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Regular Season - 14",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Manchester United",
+                        "logo": "https://media.api-sports.io/football/teams/33.png",
+                        "winner": True,
+                    },
+                    "away": {
+                        "id": 34,
+                        "name": "Tottenham Hotspur",
+                        "logo": "https://media.api-sports.io/football/teams/34.png",
+                        "winner": False,
+                    },
+                },
+                "goals": {"home": 2, "away": 1},
+                "score": {
+                    "halftime": {"home": 1, "away": 0},
+                    "fulltime": {"home": 2, "away": 1},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            }
+        ],
+    }
+
+
+@pytest.fixture
+def fixture_payload():
+    return {
+        "response": [
+            {
+                "fixture": {
+                    "id": 868078,
+                    "referee": "Anthony Taylor",
+                    "timezone": "America/New_York",
+                    "date": "2024-12-01T15:00:00+00:00",
+                    "timestamp": 1733068800,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Match Finished",
+                        "short": "FT",
+                        "elapsed": 90,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Regular Season - 14",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Manchester United",
+                        "logo": "https://media.api-sports.io/football/teams/33.png",
+                        "winner": True,
+                    },
+                    "away": {
+                        "id": 34,
+                        "name": "Tottenham Hotspur",
+                        "logo": "https://media.api-sports.io/football/teams/34.png",
+                        "winner": False,
+                    },
+                },
+                "goals": {"home": 2, "away": 1},
+                "score": {
+                    "halftime": {"home": 1, "away": 0},
+                    "fulltime": {"home": 2, "away": 1},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            }
+        ]
+    }
+
+
+@pytest.fixture
+def live_fixture_payload():
+    return {
+        "response": [
+            {
+                "fixture": {
+                    "id": 868079,
+                    "referee": None,
+                    "timezone": "UTC",
+                    "date": "2024-12-01T20:00:00+00:00",
+                    "timestamp": 1733086800,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "2nd Half",
+                        "short": "2H",
+                        "elapsed": 67,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Regular Season - 14",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Manchester United",
+                        "logo": "https://x.png",
+                        "winner": None,
+                    },
+                    "away": {
+                        "id": 34,
+                        "name": "Tottenham",
+                        "logo": "https://y.png",
+                        "winner": None,
+                    },
+                },
+                "goals": {"home": 1, "away": 1},
+                "score": {
+                    "halftime": {"home": 0, "away": 1},
+                    "fulltime": {"home": None, "away": None},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            }
+        ]
+    }
+
+
+@pytest.fixture
+def scheduled_fixture_payload():
+    return {
+        "response": [
+            {
+                "fixture": {
+                    "id": 868080,
+                    "referee": None,
+                    "timezone": "UTC",
+                    "date": "2024-12-05T15:00:00+00:00",
+                    "timestamp": 1733408400,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Not Started",
+                        "short": "NS",
+                        "elapsed": None,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Regular Season - 15",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Manchester United",
+                        "logo": "https://x.png",
+                        "winner": None,
+                    },
+                    "away": {
+                        "id": 40,
+                        "name": "Arsenal",
+                        "logo": "https://y.png",
+                        "winner": None,
+                    },
+                },
+                "goals": {"home": None, "away": None},
+                "score": {
+                    "halftime": {"home": None, "away": None},
+                    "fulltime": {"home": None, "away": None},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            }
+        ]
+    }
+
+
+@pytest.fixture
+def cancelled_fixture_payload():
+    return {
+        "response": [
+            {
+                "fixture": {
+                    "id": 868081,
+                    "referee": None,
+                    "timezone": "UTC",
+                    "date": "2024-12-01T15:00:00+00:00",
+                    "timestamp": 1733068800,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Match Cancelled",
+                        "short": "CANC",
+                        "elapsed": None,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Regular Season - 14",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Man Utd",
+                        "logo": "https://x.png",
+                        "winner": None,
+                    },
+                    "away": {
+                        "id": 34,
+                        "name": "Spurs",
+                        "logo": "https://y.png",
+                        "winner": None,
+                    },
+                },
+                "goals": {"home": None, "away": None},
+                "score": {
+                    "halftime": {"home": None, "away": None},
+                    "fulltime": {"home": None, "away": None},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            }
+        ]
+    }
+
+
+@pytest.fixture
+def aet_fixture_payload():
+    return {
+        "response": [
+            {
+                "fixture": {
+                    "id": 868082,
+                    "referee": "M. Oliver",
+                    "timezone": "UTC",
+                    "date": "2024-12-01T17:00:00+00:00",
+                    "timestamp": 1733076000,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Finished After Extra Time",
+                        "short": "AET",
+                        "elapsed": 120,
+                        "extra": 30,
+                    },
+                },
+                "league": {
+                    "id": 2,
+                    "name": "FA Cup",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/2.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Quarter Final",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Man Utd",
+                        "logo": "https://x.png",
+                        "winner": True,
+                    },
+                    "away": {
+                        "id": 34,
+                        "name": "Spurs",
+                        "logo": "https://y.png",
+                        "winner": False,
+                    },
+                },
+                "goals": {"home": 3, "away": 2},
+                "score": {
+                    "halftime": {"home": 1, "away": 1},
+                    "fulltime": {"home": 2, "away": 2},
+                    "extratime": {"home": 3, "away": 2},
+                    "penalty": {"home": None, "away": None},
+                },
+            }
+        ]
+    }
