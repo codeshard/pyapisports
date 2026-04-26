@@ -7,6 +7,7 @@ from pyapisports.football.models import (
     CountryList,
     Fixture,
     FixtureList,
+    HeadToHead,
     LeagueList,
     RoundsList,
     SeasonsList,
@@ -464,3 +465,78 @@ class FootballResource(BaseResource):
         if not result:
             raise APISportsError(f"Fixture {id} not found.")
         return result[0]
+
+    def get_head_to_head(
+        self,
+        team_a: int,
+        team_b: int,
+        date: str | None = None,
+        league: int | None = None,
+        season: int | None = None,
+        status: str | None = None,
+        from_date: str | None = None,
+        to_date: str | None = None,
+        last: int | None = None,
+        next: int | None = None,
+        timezone: str | None = None,
+    ) -> HeadToHead:
+        """
+        Retrieve the head-to-head fixture history between two teams.
+
+        The two team IDs are passed as positional arguments and are joined
+        internally into the hyphen-separated format the API expects.
+
+        Args:
+            team_a:    First team ID (required).
+            team_b:    Second team ID (required).
+            date:      Only return fixtures played on this date.
+            league:    Filter to a specific league.
+            season:    Filter to a specific season year.
+            status:    Filter by fixture status code(s).
+            from_date: Only fixtures on or after this date.
+            to_date:   Only fixtures on or before this date.
+            last:      Return only the last N meetings.
+            next:      Return only the next N scheduled meetings.
+            timezone:  Localise kickoff timestamps.
+
+        Returns:
+            HeadToHead: Contains the full fixture list plus H2H computed
+            helpers (wins, draws, goals, summary).
+
+        Example:
+            >>> h2h = client.football.get_head_to_head(33, 34)
+            >>> h2h.summary()
+            {'team_a_id': 33, 'team_b_id': 34, 'played': 10, ...}
+
+            >>> h2h.last(5)[0].score_str
+            '2 - 1'
+
+            >>> h2h.in_league(39).wins_for(33)
+            4
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures-headtohead
+        """
+        params: dict[str, Any] = {"h2h": f"{team_a}-{team_b}"}
+
+        if date:
+            params["date"] = date
+        if league:
+            params["league"] = league
+        if season:
+            params["season"] = season
+        if status:
+            params["status"] = status
+        if from_date:
+            params["from"] = from_date
+        if to_date:
+            params["to"] = to_date
+        if last:
+            params["last"] = last
+        if next:
+            params["next"] = next
+        if timezone:
+            params["timezone"] = timezone
+
+        raw = self._client._get("/fixtures/headtohead", params=params)
+        return HeadToHead.from_api(raw, team_a_id=team_a, team_b_id=team_b)
