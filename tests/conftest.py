@@ -1194,3 +1194,216 @@ def aet_fixture_payload():
             }
         ]
     }
+
+
+@pytest.fixture
+def h2h_payload():
+    return {
+        "get": "fixtures/headtohead",
+        "parameters": {"h2h": "33-34"},
+        "errors": [],
+        "results": 4,
+        "paging": {"current": 1, "total": 1},
+        "response": [
+            {
+                "fixture": {
+                    "id": 868078,
+                    "referee": "Anthony Taylor",
+                    "timezone": "America/New_York",
+                    "date": "2024-12-01T15:00:00+00:00",
+                    "timestamp": 1733068800,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Match Finished",
+                        "short": "FT",
+                        "elapsed": 90,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Regular Season - 14",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Manchester United",
+                        "logo": "https://media.api-sports.io/football/teams/33.png",
+                        "winner": True,
+                    },
+                    "away": {
+                        "id": 34,
+                        "name": "Tottenham Hotspur",
+                        "logo": "https://media.api-sports.io/football/teams/34.png",
+                        "winner": False,
+                    },
+                },
+                "goals": {"home": 2, "away": 1},
+                "score": {
+                    "halftime": {"home": 1, "away": 0},
+                    "fulltime": {"home": 2, "away": 1},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            },
+            {
+                "fixture": {
+                    "id": 868077,
+                    "referee": "M. Oliver",
+                    "timezone": "Europe/London",
+                    "date": "2024-08-15T12:00:00+00:00",
+                    "timestamp": 1723723200,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Match Finished",
+                        "short": "FT",
+                        "elapsed": 90,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Regular Season - 1",
+                },
+                "teams": {
+                    "home": {
+                        "id": 34,
+                        "name": "Tottenham Hotspur",
+                        "logo": "https://media.api-sports.io/football/teams/34.png",
+                        "winner": True,
+                    },
+                    "away": {
+                        "id": 33,
+                        "name": "Manchester United",
+                        "logo": "https://media.api-sports.io/football/teams/33.png",
+                        "winner": False,
+                    },
+                },
+                "goals": {"home": 3, "away": 0},
+                "score": {
+                    "halftime": {"home": 2, "away": 0},
+                    "fulltime": {"home": 3, "away": 0},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            },
+            {
+                "fixture": {
+                    "id": 868076,
+                    "referee": "P. Tierney",
+                    "timezone": "Europe/London",
+                    "date": "2024-01-15T15:00:00+00:00",
+                    "timestamp": 1705324800,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Match Finished",
+                        "short": "FT",
+                        "elapsed": 90,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2023,
+                    "round": "Regular Season - 21",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Manchester United",
+                        "logo": "https://media.api-sports.io/football/teams/33.png",
+                        "winner": None,
+                    },
+                    "away": {
+                        "id": 34,
+                        "name": "Tottenham Hotspur",
+                        "logo": "https://media.api-sports.io/football/teams/34.png",
+                        "winner": None,
+                    },
+                },
+                "goals": {"home": 1, "away": 1},
+                "score": {
+                    "halftime": {"home": 0, "away": 0},
+                    "fulltime": {"home": 1, "away": 1},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            },
+            {
+                "fixture": {
+                    "id": 868079,
+                    "referee": None,
+                    "timezone": "UTC",
+                    "date": "2024-12-05T15:00:00+00:00",
+                    "timestamp": 1733408400,
+                    "venue": {
+                        "id": 556,
+                        "name": "Old Trafford",
+                        "city": "Manchester",
+                    },
+                    "status": {
+                        "long": "Not Started",
+                        "short": "NS",
+                        "elapsed": None,
+                        "extra": None,
+                    },
+                },
+                "league": {
+                    "id": 39,
+                    "name": "Premier League",
+                    "country": "England",
+                    "logo": "https://media.api-sports.io/football/leagues/39.png",
+                    "flag": "https://media.api-sports.io/flags/gb.svg",
+                    "season": 2024,
+                    "round": "Regular Season - 15",
+                },
+                "teams": {
+                    "home": {
+                        "id": 33,
+                        "name": "Manchester United",
+                        "logo": "https://x.png",
+                        "winner": None,
+                    },
+                    "away": {
+                        "id": 34,
+                        "name": "Tottenham Hotspur",
+                        "logo": "https://y.png",
+                        "winner": None,
+                    },
+                },
+                "goals": {"home": None, "away": None},
+                "score": {
+                    "halftime": {"home": None, "away": None},
+                    "fulltime": {"home": None, "away": None},
+                    "extratime": {"home": None, "away": None},
+                    "penalty": {"home": None, "away": None},
+                },
+            },
+        ],
+    }
