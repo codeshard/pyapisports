@@ -852,5 +852,5 @@ class TestGetFixture:
 
     def test_raises_when_not_found(self, football, mock_client):
         mock_client._get.return_value = {"response": []}
-        with pytest.raises(ValueError, match="Fixture 999 not found"):
+        with pytest.raises(APISportsError, match="Fixture 999 not found"):
             football.get_fixture(id=999)
