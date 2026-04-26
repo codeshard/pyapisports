@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING, Any
 from pyapisports.exceptions import APISportsError
 from pyapisports.football.models import (
     CountryList,
+    Fixture,
+    FixtureList,
     LeagueList,
     RoundsList,
     SeasonsList,
@@ -332,3 +334,133 @@ class FootballResource(BaseResource):
             params["timezone"] = timezone
         raw = self._client._get("/fixtures/rounds", params=params)
         return RoundsList.from_api(raw)
+
+    def get_fixtures(
+        self,
+        id: int | None = None,
+        ids: list[int] | None = None,
+        live: str | None = None,
+        date: str | None = None,
+        league: int | None = None,
+        season: int | None = None,
+        team: int | None = None,
+        round: str | None = None,
+        status: str | None = None,
+        from_date: str | None = None,
+        to_date: str | None = None,
+        last: int | None = None,
+        next: int | None = None,
+        timezone: str | None = None,
+    ) -> FixtureList:
+        """
+        Retrieve fixtures with flexible filtering.
+
+        Common patterns:
+            # Live fixtures across all leagues
+            get_fixtures(live="all")
+
+            # Full season schedule
+            get_fixtures(league=39, season=2024)
+
+            # Today's matches in a league
+            get_fixtures(league=39, season=2024, date="2024-12-01")
+
+            # Team's last 5 results
+            get_fixtures(team=33, last=5)
+
+            # Team's next 10 fixtures
+            get_fixtures(team=33, next=10)
+
+            # Date range
+            get_fixtures(league=39, season=2024, from_date="2024-12-01",
+                to_date="2024-12-31")
+
+            # Batch by IDs (up to 20)
+            get_fixtures(ids=[868078, 868079, 868080])
+
+        Args:
+            id: The id of the fixture
+            ids: One or more fixture ids
+            live: All or several leagues ids
+            date: A valid date
+            league: The id of the league
+            season: The season of the league
+            team: The id of the team
+            last: For the X last fixtures
+            next: For the X next fixtures
+            from: A valid date
+            to: A valid date
+            round: The round of the fixture
+            status: One or more fixture status short
+            vanue: The venue id of the fixture
+            timezone: A valid timezone from the endpoint get_timezones()
+
+        Returns:
+            FixtureList: Contains one or more fixtures.
+
+        Example:
+            >>> fixtures = client.football.get_fixtures(league=39, season=2019)
+
+            >>> fixtures.to_json()
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures
+        """
+        params: dict[str, Any] = {}
+
+        if id is not None:
+            params["id"] = id
+        if ids is not None:
+            params["ids"] = "-".join(str(i) for i in ids)
+        if live is not None:
+            params["live"] = live
+        if date is not None:
+            params["date"] = date
+        if league is not None:
+            params["league"] = league
+        if season is not None:
+            params["season"] = season
+        if team is not None:
+            params["team"] = team
+        if round is not None:
+            params["round"] = round
+        if status is not None:
+            params["status"] = status
+        if from_date is not None:
+            params["from"] = from_date
+        if to_date is not None:
+            params["to"] = to_date
+        if last is not None:
+            params["last"] = last
+        if next is not None:
+            params["next"] = next
+        if timezone is not None:
+            params["timezone"] = timezone
+
+        raw = self._client._get("/fixtures", params=params)
+        return FixtureList.from_api(raw)
+
+    def get_fixture(self, id: int, timezone: str | None = None) -> Fixture:
+        """
+        Retrieve a single fixture by ID.
+
+        Convenience wrapper around get_fixtures() that returns a Fixture
+        directly rather than a FixtureList.
+
+        Args:
+            id:       Fixture ID (required).
+            timezone: Optional timezone string for kickoff localisation.
+
+        Returns:
+            Fixture: The requested fixture.
+
+        Raises:
+            APISportsError: If the fixture ID is not found in the response.
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures
+        """
+        result = self.get_fixtures(id=id, timezone=timezone)
+        if not result:
+            raise APISportsError(f"Fixture {id} not found.")
+        return result[0]
