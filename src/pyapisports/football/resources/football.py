@@ -34,12 +34,12 @@ class FootballResource(BaseResource):
         code: str | None = None,
         search: str | None = None,
     ) -> CountryList:
-        """Retrieve a  list of available countries for the leagues endpoint.
+        """Retrieve a list of available countries for the leagues endpoint.
 
         Args:
-            name (str, optional): The name of the country
-            code (str, optional): The Alpha code of the country
-            search: (str, optional): The name of the country (+ 3 characters).
+            name: The name of the country.
+            code: The Alpha code of the country.
+            search: The name of the country (+ 3 characters).
 
         Returns:
             CountryList: Collection of countries matching the query.
@@ -62,7 +62,7 @@ class FootballResource(BaseResource):
         return CountryList.from_api(raw)
 
     def get_seasons(self) -> SeasonsList:
-        """Retrieve a  list of available seasons, that can be used in other
+        """Retrieve a list of available seasons, that can be used in other
         endpoints as filters.
 
         Returns:
@@ -87,7 +87,7 @@ class FootballResource(BaseResource):
         current: bool | None = None,
         search: str | None = None,
     ) -> LeagueList:
-        """Retrieve a  list of available leagues and cups.
+        """Retrieve a list of available leagues and cups.
         The league id are unique in the API and leagues keep it across all
         seasons
 
@@ -127,7 +127,7 @@ class FootballResource(BaseResource):
         country: str | None = None,
         search: str | None = None,
     ) -> VenueList:
-        """Retrieve a  list of available venues.
+        """Retrieve a list of available venues.
         The venue id are unique in the API.
         At least one parameter is required.
 
@@ -167,7 +167,7 @@ class FootballResource(BaseResource):
         venue_id: int | None = None,
         search: str | None = None,
     ) -> TeamInfoList:
-        """Retrieve a  list of available teams.
+        """Retrieve a list of available teams.
         The team id are unique in the API.
         At least one parameter is required.
 
@@ -203,8 +203,8 @@ class FootballResource(BaseResource):
         season: int,
         date: str | None = None,
     ) -> TeamStatistics:
-        """Retrieve aggregated season statistics for a team in a specific
-        league.
+        """Retrieve aggregated season statistics for a team in a
+        specific league.
 
         All three of `team`, `league`, and `season` are required by the API.
         Pass `date` to calculate stats up to a specific point in the season
@@ -235,7 +235,7 @@ class FootballResource(BaseResource):
     def get_team_seasons(self, team: int) -> TeamSeasonsList:
         """Retrieve the list of seasons available for a team.
 
-        The team is is required by the API.
+        The team ID is required by the API.
 
         Returns:
             TeamSeasonsList: List of seasons.
@@ -251,7 +251,7 @@ class FootballResource(BaseResource):
         return TeamSeasonsList.from_api(data=raw)
 
     def get_team_countries(self) -> TeamCountryList:
-        """Retrieve the list of of countries available for the teams endpoint.
+        """Retrieve the list of countries available for the teams endpoint.
 
         Returns:
             TeamCountryList: List of countries.
@@ -271,8 +271,7 @@ class FootballResource(BaseResource):
         season: int,
         team: int | None = None,
     ) -> Standings:
-        """
-        Retrieve the standings table(s) for a league and season.
+        """Retrieve the standings table(s) for a league and season.
 
         Args:
             league:  League ID (required).
@@ -289,7 +288,7 @@ class FootballResource(BaseResource):
             >>> stands = client.football.get_standings(league=39, season=2024)
             >>> stands.to_json()
 
-        API reference:
+        API Reference:
             GET https://api-sports.io/documentation/football/v3#tag/Standings/operation/get-standings
         """
         params: dict[str, Any] = {"league": league, "season": season}
@@ -306,8 +305,7 @@ class FootballResource(BaseResource):
         dates: bool = False,
         timezone: str | None = None,
     ) -> RoundsList:
-        """
-        Retrieve the rounds for a league or a cup.
+        """Retrieve the rounds for a league or a cup.
 
         Args:
             league:  League ID (required).
@@ -320,10 +318,9 @@ class FootballResource(BaseResource):
 
         Example:
             >>> rounds = client.football.get_rounds(league=39, season=2019)
-
             >>> rounds.to_json()
 
-        API reference:
+        API Reference:
             https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures-rounds
         """
         params: dict[str, Any] = {"league": league, "season": season}
@@ -353,8 +350,7 @@ class FootballResource(BaseResource):
         next: int | None = None,
         timezone: str | None = None,
     ) -> FixtureList:
-        """
-        Retrieve fixtures with flexible filtering.
+        """Retrieve fixtures with flexible filtering.
 
         Common patterns:
             # Live fixtures across all leagues
@@ -380,31 +376,30 @@ class FootballResource(BaseResource):
             get_fixtures(ids=[868078, 868079, 868080])
 
         Args:
-            id: The id of the fixture
-            ids: One or more fixture ids
-            live: All or several leagues ids
-            date: A valid date
-            league: The id of the league
-            season: The season of the league
-            team: The id of the team
-            last: For the X last fixtures
-            next: For the X next fixtures
-            from: A valid date
-            to: A valid date
-            round: The round of the fixture
-            status: One or more fixture status short
-            vanue: The venue id of the fixture
-            timezone: A valid timezone from the endpoint get_timezones()
+            id: The id of the fixture.
+            ids: One or more fixture ids.
+            live: All or several leagues ids.
+            date: A valid date.
+            league: The id of the league.
+            season: The season of the league.
+            team: The id of the team.
+            last: For the X last fixtures.
+            next: For the X next fixtures.
+            from_date: A valid date.
+            to_date: A valid date.
+            round: The round of the fixture.
+            status: One or more fixture status short.
+            venue: The venue id of the fixture.
+            timezone: A valid timezone from the endpoint get_timezones().
 
         Returns:
             FixtureList: Contains one or more fixtures.
 
         Example:
             >>> fixtures = client.football.get_fixtures(league=39, season=2019)
-
             >>> fixtures.to_json()
 
-        API reference:
+        API Reference:
             https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures
         """
         params: dict[str, Any] = {}
@@ -442,8 +437,7 @@ class FootballResource(BaseResource):
         return FixtureList.from_api(raw)
 
     def get_fixture(self, id: int, timezone: str | None = None) -> Fixture:
-        """
-        Retrieve a single fixture by ID.
+        """Retrieve a single fixture by ID.
 
         Convenience wrapper around get_fixtures() that returns a Fixture
         directly rather than a FixtureList.
@@ -458,7 +452,7 @@ class FootballResource(BaseResource):
         Raises:
             APISportsError: If the fixture ID is not found in the response.
 
-        API reference:
+        API Reference:
             https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures
         """
         result = self.get_fixtures(id=id, timezone=timezone)
@@ -480,8 +474,7 @@ class FootballResource(BaseResource):
         next: int | None = None,
         timezone: str | None = None,
     ) -> HeadToHead:
-        """
-        Retrieve the head-to-head fixture history between two teams.
+        """Retrieve the head-to-head fixture history between two teams.
 
         The two team IDs are passed as positional arguments and are joined
         internally into the hyphen-separated format the API expects.
@@ -514,7 +507,7 @@ class FootballResource(BaseResource):
             >>> h2h.in_league(39).wins_for(33)
             4
 
-        API reference:
+        API Reference:
             https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures-headtohead
         """
         params: dict[str, Any] = {"h2h": f"{team_a}-{team_b}"}
