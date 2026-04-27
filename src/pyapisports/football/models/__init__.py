@@ -1,7 +1,13 @@
 from .base import BaseList
 from .country import Country, CountryList
 from .coverage import Coverage, FixtureCoverage
-from .fixtures import Fixture, FixtureList, HeadToHead, RoundsList
+from .fixtures import (
+    Fixture,
+    FixtureList,
+    FixtureStatistics,
+    HeadToHead,
+    RoundsList,
+)
 from .leagues import League, LeagueList
 from .seasons import Season, SeasonsList
 from .standings import StandingEntry, StandingRecord, Standings, StandingsTable
@@ -43,6 +49,7 @@ __all__ = [
     "FixturesStats",
     "Fixture",
     "FixtureList",
+    "FixtureStatistics",
     "GoalMinuteBreakdown",
     "GoalMinuteSlot",
     "GoalsStats",
