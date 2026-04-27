@@ -7,6 +7,7 @@ from pyapisports.football.models import (
     CountryList,
     Fixture,
     FixtureList,
+    FixtureStatistics,
     HeadToHead,
     LeagueList,
     RoundsList,
@@ -533,3 +534,52 @@ class FootballResource(BaseResource):
 
         raw = self._client._get("/fixtures/headtohead", params=params)
         return HeadToHead.from_api(raw, team_a_id=team_a, team_b_id=team_b)
+
+    def get_fixture_statistics(
+        self,
+        fixture: int,
+        team: int | None = None,
+        type: str | None = None,
+        half: bool | None = None,
+    ) -> FixtureStatistics:
+        """
+        Retrieve match statistics for a specific fixture.
+
+        Statistics include shots, possession, passes, corners, cards and more.
+        Only available for fixtures that have started; returns an empty
+        response for scheduled matches.
+
+        Args:
+            fixture: Fixture ID (required).
+            team:    Filter to a single team's stats by team ID.
+            type:    Filter to a single stat type e.g. "Total Shots".
+                     Use constants from StatType for safety:
+                     ``StatType.SHOTS_ON_GOAL``, ``StatType.BALL_POSSESSION``,
+            half:    If True, includes first and second half breakdowns
+                     in addition to full-time stats.
+
+        Returns:
+            FixtureStatistics: Contains home and away TeamFixtureStatistics,
+            with typed accessors for all common stat types and a `.compare()`
+            helper for side-by-side display.
+
+        Example:
+            >>> stats = client.football.get_fixture_statistics(fixture=215662)
+            >>> stats.home.ball_possession
+            56
+            >>> stats.compare(StatType.CORNERS)
+            {"type": "Corner Kicks", "home": 7, "away": 3}
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures-statistics
+        """
+        params: dict[str, Any] = {"fixture": fixture}
+        if team is not None:
+            params["team"] = team
+        if type is not None:
+            params["type"] = type
+        if half is not None:
+            params["half"] = "true" if half else "false"
+
+        raw = self._client._get("/fixtures/statistics", params=params)
+        return FixtureStatistics.from_api(raw, fixture_id=fixture)
