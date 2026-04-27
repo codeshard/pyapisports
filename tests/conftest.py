@@ -1407,3 +1407,67 @@ def h2h_payload():
             },
         ],
     }
+
+
+@pytest.fixture
+def fixture_statistics_payload():
+    return {
+        "get": "fixtures/statistics",
+        "parameters": {"fixture": "215662"},
+        "errors": [],
+        "results": 1,
+        "response": [
+            {
+                "team": {
+                    "id": 33,
+                    "name": "Manchester United",
+                    "logo": "https://media.api-sports.io/football/teams/33.png",
+                },
+                "statistics": [
+                    {"type": "Shots on Goal", "value": 8},
+                    {"type": "Shots off Goal", "value": 3},
+                    {"type": "Total Shots", "value": 11},
+                    {"type": "Blocked Shots", "value": 2},
+                    {"type": "Shots insidebox", "value": 9},
+                    {"type": "Shots outsidebox", "value": 2},
+                    {"type": "Fouls", "value": 12},
+                    {"type": "Corner Kicks", "value": 7},
+                    {"type": "Offsides", "value": 3},
+                    {"type": "Ball Possession", "value": "56%"},
+                    {"type": "Yellow Cards", "value": 2},
+                    {"type": "Red Cards", "value": 0},
+                    {"type": "Goalkeeper Saves", "value": 3},
+                    {"type": "Total passes", "value": 450},
+                    {"type": "Passes accurate", "value": 380},
+                    {"type": "Passes %", "value": "84%"},
+                    {"type": "expected_goals", "value": "1.89"},
+                ],
+            },
+            {
+                "team": {
+                    "id": 34,
+                    "name": "Tottenham Hotspur",
+                    "logo": "https://media.api-sports.io/football/teams/34.png",
+                },
+                "statistics": [
+                    {"type": "Shots on Goal", "value": 5},
+                    {"type": "Shots off Goal", "value": 2},
+                    {"type": "Total Shots", "value": 7},
+                    {"type": "Blocked Shots", "value": 1},
+                    {"type": "Shots insidebox", "value": 5},
+                    {"type": "Shots outsidebox", "value": 2},
+                    {"type": "Fouls", "value": 14},
+                    {"type": "Corner Kicks", "value": 3},
+                    {"type": "Offsides", "value": 1},
+                    {"type": "Ball Possession", "value": "44%"},
+                    {"type": "Yellow Cards", "value": 3},
+                    {"type": "Red Cards", "value": 0},
+                    {"type": "Goalkeeper Saves", "value": 2},
+                    {"type": "Total passes", "value": 352},
+                    {"type": "Passes accurate", "value": 291},
+                    {"type": "Passes %", "value": "83%"},
+                    {"type": "expected_goals", "value": "1.12"},
+                ],
+            },
+        ],
+    }
