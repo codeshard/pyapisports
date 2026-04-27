@@ -854,3 +854,83 @@ class TestGetFixture:
         mock_client._get.return_value = {"response": []}
         with pytest.raises(APISportsError, match="Fixture 999 not found"):
             football.get_fixture(id=999)
+
+
+class TestGetFixtureStatistics:
+    def test_passes_fixture_id(
+        self, football, mock_client, fixture_statistics_payload
+    ):
+        mock_client._get.return_value = fixture_statistics_payload
+        football.get_fixture_statistics(fixture=215662)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/statistics", params={"fixture": 215662}
+        )
+
+    def test_passes_team_filter(
+        self, football, mock_client, fixture_statistics_payload
+    ):
+        mock_client._get.return_value = fixture_statistics_payload
+        football.get_fixture_statistics(fixture=215662, team=33)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/statistics", params={"fixture": 215662, "team": 33}
+        )
+
+    def test_passes_type_filter(
+        self, football, mock_client, fixture_statistics_payload
+    ):
+        mock_client._get.return_value = fixture_statistics_payload
+        football.get_fixture_statistics(
+            fixture=215662, type="Ball Possession"
+        )
+        mock_client._get.assert_called_once_with(
+            "/fixtures/statistics",
+            params={"fixture": 215662, "type": "Ball Possession"},
+        )
+
+    def test_passes_half_true(
+        self, football, mock_client, fixture_statistics_payload
+    ):
+        mock_client._get.return_value = fixture_statistics_payload
+        football.get_fixture_statistics(fixture=215662, half=True)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/statistics", params={"fixture": 215662, "half": "true"}
+        )
+
+    def test_passes_half_false(
+        self, football, mock_client, fixture_statistics_payload
+    ):
+        mock_client._get.return_value = fixture_statistics_payload
+        football.get_fixture_statistics(fixture=215662, half=False)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/statistics", params={"fixture": 215662, "half": "false"}
+        )
+
+    def test_passes_all_params(
+        self, football, mock_client, fixture_statistics_payload
+    ):
+        mock_client._get.return_value = fixture_statistics_payload
+        football.get_fixture_statistics(
+            fixture=215662,
+            team=33,
+            type="Ball Possession",
+            half=True,
+        )
+        mock_client._get.assert_called_once_with(
+            "/fixtures/statistics",
+            params={
+                "fixture": 215662,
+                "team": 33,
+                "type": "Ball Possession",
+                "half": "true",
+            },
+        )
+
+    def test_returns_fixture_statistics(
+        self, football, mock_client, fixture_statistics_payload
+    ):
+        mock_client._get.return_value = fixture_statistics_payload
+        result = football.get_fixture_statistics(fixture=215662)
+        assert result is not None
+        assert result.fixture_id == 215662
+        assert result.home.team_id == 33
+        assert result.away.team_id == 34
