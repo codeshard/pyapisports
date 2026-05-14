@@ -1139,64 +1139,6 @@ def cancelled_fixture_payload():
 
 
 @pytest.fixture
-def aet_fixture_payload():
-    return {
-        "response": [
-            {
-                "fixture": {
-                    "id": 868082,
-                    "referee": "M. Oliver",
-                    "timezone": "UTC",
-                    "date": "2024-12-01T17:00:00+00:00",
-                    "timestamp": 1733076000,
-                    "venue": {
-                        "id": 556,
-                        "name": "Old Trafford",
-                        "city": "Manchester",
-                    },
-                    "status": {
-                        "long": "Finished After Extra Time",
-                        "short": "AET",
-                        "elapsed": 120,
-                        "extra": 30,
-                    },
-                },
-                "league": {
-                    "id": 2,
-                    "name": "FA Cup",
-                    "country": "England",
-                    "logo": "https://media.api-sports.io/football/leagues/2.png",
-                    "flag": "https://media.api-sports.io/flags/gb.svg",
-                    "season": 2024,
-                    "round": "Quarter Final",
-                },
-                "teams": {
-                    "home": {
-                        "id": 33,
-                        "name": "Man Utd",
-                        "logo": "https://x.png",
-                        "winner": True,
-                    },
-                    "away": {
-                        "id": 34,
-                        "name": "Spurs",
-                        "logo": "https://y.png",
-                        "winner": False,
-                    },
-                },
-                "goals": {"home": 3, "away": 2},
-                "score": {
-                    "halftime": {"home": 1, "away": 1},
-                    "fulltime": {"home": 2, "away": 2},
-                    "extratime": {"home": 3, "away": 2},
-                    "penalty": {"home": None, "away": None},
-                },
-            }
-        ]
-    }
-
-
-@pytest.fixture
 def h2h_payload():
     return {
         "get": "fixtures/headtohead",
@@ -1468,6 +1410,135 @@ def fixture_statistics_payload():
                     {"type": "Passes %", "value": "83%"},
                     {"type": "expected_goals", "value": "1.12"},
                 ],
+            },
+        ],
+    }
+
+
+@pytest.fixture
+def events_payload():
+    return {
+        "get": "fixtures/events",
+        "parameters": {"fixture": "215662"},
+        "errors": [],
+        "results": 13,
+        "response": [
+            {
+                "time": {"elapsed": 5, "extra": None},
+                "team": {"id": 33, "name": "Manchester United", "logo": "https://x.png"},
+                "player": {"id": 10, "name": "Marcus Rashford"},
+                "assist": {"id": 7, "name": "Bruno Fernandes"},
+                "type": "Goal",
+                "detail": "Normal Goal",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 23, "extra": None},
+                "team": {"id": 34, "name": "Tottenham", "logo": "https://y.png"},
+                "player": {"id": 9, "name": "Harry Kane"},
+                "assist": None,
+                "type": "Goal",
+                "detail": "Normal Goal",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 35, "extra": None},
+                "team": {"id": 33, "name": "Manchester United", "logo": "https://x.png"},
+                "player": {"id": 10, "name": "Marcus Rashford"},
+                "assist": None,
+                "type": "Card",
+                "detail": "Yellow Card",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 42, "extra": None},
+                "team": {"id": 34, "name": "Tottenham", "logo": "https://y.png"},
+                "player": None,
+                "assist": None,
+                "type": "Card",
+                "detail": "Yellow Card",
+                "comments": "Time wasting",
+            },
+            {
+                "time": {"elapsed": 55, "extra": None},
+                "team": {"id": 33, "name": "Manchester United", "logo": "https://x.png"},
+                "player": {"id": 5, "name": "Harry Maguire"},
+                "assist": None,
+                "type": "Card",
+                "detail": "Red Card",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 67, "extra": None},
+                "team": {"id": 34, "name": "Tottenham", "logo": "https://y.png"},
+                "player": {"id": 4, "name": "Cristian Romero"},
+                "assist": None,
+                "type": "Card",
+                "detail": "Yellow Red Card",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 70, "extra": None},
+                "team": {"id": 34, "name": "Tottenham", "logo": "https://y.png"},
+                "player": {"id": 9, "name": "Harry Kane"},
+                "assist": {"id": 7, "name": "Son Heung-min"},
+                "type": "Goal",
+                "detail": "Penalty",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 75, "extra": None},
+                "team": {"id": 33, "name": "Manchester United", "logo": "https://x.png"},
+                "player": {"id": 10, "name": "Marcus Rashford"},
+                "assist": None,
+                "type": "Goal",
+                "detail": "Missed Penalty",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 82, "extra": None},
+                "team": {"id": 34, "name": "Tottenham", "logo": "https://y.png"},
+                "player": {"id": 4, "name": "Cristian Romero"},
+                "assist": None,
+                "type": "Goal",
+                "detail": "Own Goal",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 85, "extra": None},
+                "team": {"id": 33, "name": "Manchester United", "logo": "https://x.png"},
+                "player": None,
+                "assist": None,
+                "type": "subst",
+                "detail": "Substitution 1",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 88, "extra": None},
+                "team": {"id": 34, "name": "Tottenham", "logo": "https://y.png"},
+                "player": None,
+                "assist": None,
+                "type": "subst",
+                "detail": "Substitution 2",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 90, "extra": 3},
+                "team": {"id": 33, "name": "Manchester United", "logo": "https://x.png"},
+                "player": {"id": 10, "name": "Marcus Rashford"},
+                "assist": {"id": 7, "name": "Bruno Fernandes"},
+                "type": "Goal",
+                "detail": "Normal Goal",
+                "comments": None,
+            },
+            {
+                "time": {"elapsed": 90, "extra": None},
+                "team": {"id": 34, "name": "Tottenham", "logo": "https://y.png"},
+                "player": None,
+                "assist": None,
+                "type": "Var",
+                "detail": "Goal cancelled",
+                "comments": "Offside",
             },
         ],
     }
