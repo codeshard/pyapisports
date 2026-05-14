@@ -2,7 +2,13 @@ from .base import BaseList
 from .country import Country, CountryList
 from .coverage import Coverage, FixtureCoverage
 from .fixtures import (
+    EventPlayer,
+    EventTeam,
+    EventTime,
+    EventType,
     Fixture,
+    FixtureEvent,
+    FixtureEventList,
     FixtureList,
     FixtureStatistics,
     HeadToHead,
@@ -45,6 +51,12 @@ __all__ = [
     "Country",
     "CountryList",
     "Coverage",
+    "EventPlayer",
+    "EventTeam",
+    "EventTime",
+    "EventType",
+    "FixtureEvent",
+    "FixtureEventList",
     "FixtureCoverage",
     "FixturesStats",
     "Fixture",
