@@ -6,6 +6,7 @@ from pyapisports.exceptions import APISportsError
 from pyapisports.football.models import (
     CountryList,
     Fixture,
+    FixtureEventList,
     FixtureList,
     FixtureStatistics,
     HeadToHead,
@@ -583,3 +584,49 @@ class FootballResource(BaseResource):
 
         raw = self._client._get("/fixtures/statistics", params=params)
         return FixtureStatistics.from_api(raw, fixture_id=fixture)
+
+    def get_fixture_events(
+        self,
+        fixture: int,
+        team: int | None = None,
+        player: int | None = None,
+        type: str | None = None,
+    ) -> FixtureEventList:
+        """
+        Retrieve the chronological event timeline for a specific fixture.
+
+        Events cover goals, cards, substitutions, and VAR decisions.
+        Only available for fixtures that have started; returns an empty
+        list for scheduled matches.
+
+        Args:
+            fixture: Fixture ID (required).
+            team:    Filter to one team's events by team ID.
+            player:  Filter to events involving a specific player ID.
+            type:    Filter by event type. Use EventType constants:
+                     ``EventType.GOAL``, ``EventType.CARD``,
+                     ``EventType.SUBST``, ``EventType.VAR``.
+
+        Returns:
+            FixtureEventList: Chronologically ordered events with typed
+            filters and aggregate helpers.
+
+        Example:
+            >>> events = client.football.get_fixture_events(fixture=215662)
+            >>> events.goals()
+            >>> events.by_team(50).cards()
+            >>> events.scorers()
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures-events
+        """
+        params: dict[str, Any] = {"fixture": fixture}
+        if team is not None:
+            params["team"] = team
+        if player is not None:
+            params["player"] = player
+        if type is not None:
+            params["type"] = type
+
+        raw = self._client._get("/fixtures/events", params=params)
+        return FixtureEventList.from_api(raw, fixture_id=fixture)
