@@ -9,6 +9,7 @@ from pyapisports.football.models import (
     FixtureEventList,
     FixtureLineups,
     FixtureList,
+    FixturePlayers,
     FixtureStatistics,
     HeadToHead,
     LeagueList,
@@ -681,3 +682,48 @@ class FootballResource(BaseResource):
 
         raw = self._client._get("/fixtures/lineups", params=params)
         return FixtureLineups.from_api(raw, fixture_id=fixture)
+
+    def get_fixture_players(
+        self,
+        fixture: int,
+        team: int | None = None,
+    ) -> FixturePlayers:
+        """
+        Retrieve per-player match statistics for a specific fixture.
+
+        Returns individual performance data for every player who appeared
+        in the match — starters and substitutes alike — covering shots,
+        goals, assists, passes, tackles, dribbles, fouls, cards, penalties
+        and a numeric performance rating.
+
+        Args:
+            fixture: Fixture ID (required).
+            team:    Filter to a single team's players by team ID.
+                     When provided the response still wraps both teams
+                     but only one will be populated.
+
+        Returns:
+            FixturePlayers: Contains home and away TeamFixturePlayers
+            with lookups, position filters, and rating-based sorting.
+
+        Note:
+            Not available for all competitions. Check the league's
+            ``coverage.fixtures.statistics_players`` flag before calling.
+            Returns an empty response for scheduled matches.
+
+        Example:
+            >>> players = client.football.get_fixture_players(fixture=215662)
+            >>> players.home.top_rated.name
+            "Erling Haaland"
+            >>> players.top_rated(n=3)
+            [<Haaland 9.2>, <Saka 8.1>, <Ødegaard 7.9>]
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures-players
+        """
+        params: dict[str, Any] = {"fixture": fixture}
+        if team is not None:
+            params["team"] = team
+
+        raw = self._client._get("/fixtures/players", params=params)
+        return FixturePlayers.from_api(raw, fixture_id=fixture)
