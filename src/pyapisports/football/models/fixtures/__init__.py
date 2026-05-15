@@ -8,6 +8,7 @@ from .events import (
 )
 from .fixtures import Fixture, FixtureList
 from .headtohead import HeadToHead
+from .lineups import FixtureLineups
 from .rounds import RoundsList
 from .statistics import FixtureStatistics
 
@@ -20,6 +21,7 @@ __all__ = [
     "FixtureEventList",
     "Fixture",
     "FixtureList",
+    "FixtureLineups",
     "HeadToHead",
     "RoundsList",
     "FixtureStatistics",
