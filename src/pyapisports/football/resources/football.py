@@ -7,6 +7,7 @@ from pyapisports.football.models import (
     CountryList,
     Fixture,
     FixtureEventList,
+    FixtureLineups,
     FixtureList,
     FixtureStatistics,
     HeadToHead,
@@ -630,3 +631,53 @@ class FootballResource(BaseResource):
 
         raw = self._client._get("/fixtures/events", params=params)
         return FixtureEventList.from_api(raw, fixture_id=fixture)
+
+    def get_fixture_lineups(
+        self,
+        fixture: int,
+        team: int | None = None,
+        player: int | None = None,
+        type: str | None = None,  # "startXI" | "substitutes"
+    ) -> FixtureLineups:
+        """
+        Retrieve the starting lineups and substitutes bench for a fixture.
+
+        Lineups include formation, kit colors, coach details, and each
+        player's pitch grid position for formation rendering.
+
+        Available once lineups are confirmed, typically 60-75 minutes
+        before kick-off. Returns an empty response for matches without
+        lineup coverage (check the league's coverage.fixtures.lineups flag).
+
+        Args:
+            fixture: Fixture ID (required).
+            team:    Filter to a single team's lineup by team ID.
+            player:  Filter to entries containing a specific player ID.
+            type:    Filter by player group: "startXI" or "substitutes".
+
+        Returns:
+            FixtureLineups: Contains home and away TeamLineup objects with
+            formation strings, grid maps for rendering, and player lookups.
+
+        Example:
+            >>> lineups = client.football.get_fixture_lineups(fixture=215662)
+            >>> lineups.home.formation
+            "4-3-3"
+            >>> lineups.home.goalkeeper.name
+            "Ederson"
+            >>> lineups.home.grid_map()
+            {"1:1": <GK Ederson>, "2:1": <CB Walker>, ...}
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Fixtures/operation/get-fixtures-lineups
+        """
+        params: dict[str, Any] = {"fixture": fixture}
+        if team is not None:
+            params["team"] = team
+        if player is not None:
+            params["player"] = player
+        if type is not None:
+            params["type"] = type
+
+        raw = self._client._get("/fixtures/lineups", params=params)
+        return FixtureLineups.from_api(raw, fixture_id=fixture)
