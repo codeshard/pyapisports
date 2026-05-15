@@ -998,3 +998,158 @@ class TestGetFixtureEvents:
         assert result is not None
         assert result.fixture_id == 215662
         assert len(result) == 13
+
+
+class TestGetFixturePlayers:
+    @pytest.fixture
+    def fixture_players_payload(self):
+        return {
+            "get": "fixtures/players",
+            "parameters": {"fixture": 169080},
+            "errors": [],
+            "results": 2,
+            "response": [
+                {
+                    "team": {"id": 2284, "name": "Manchester City", "logo": "https://x.com/mci.png"},
+                    "players": [
+                        {
+                            "player": {"id": 35931, "name": "Erling Haaland", "photo": ""},
+                            "statistics": [{
+                                "games": {"minutes": 90, "number": 9, "position": "F", "rating": "9.2", "captain": False, "substitute": False},
+                                "shots": {"total": 5, "on": 4},
+                                "goals": {"total": 2},
+                                "passes": {"total": 42, "key": 1, "accuracy": "72%"},
+                                "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
+                            }],
+                        },
+                    ],
+                },
+                {
+                    "team": {"id": 2285, "name": "Liverpool", "logo": "https://x.com/liv.png"},
+                    "players": [],
+                },
+            ],
+        }
+
+    def test_passes_fixture_id(
+        self, football, mock_client, fixture_players_payload
+    ):
+        mock_client._get.return_value = fixture_players_payload
+        football.get_fixture_players(fixture=169080)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/players", params={"fixture": 169080}
+        )
+
+    def test_passes_team_filter(
+        self, football, mock_client, fixture_players_payload
+    ):
+        mock_client._get.return_value = fixture_players_payload
+        football.get_fixture_players(fixture=169080, team=2284)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/players", params={"fixture": 169080, "team": 2284}
+        )
+
+    def test_returns_fixture_players(
+        self, football, mock_client, fixture_players_payload
+    ):
+        mock_client._get.return_value = fixture_players_payload
+        result = football.get_fixture_players(fixture=169080)
+        assert result is not None
+        assert result.fixture_id == 169080
+        assert result.home.team_id == 2284
+        assert result.away.team_id == 2285
+        assert len(result.home.players) == 1
+        assert result.home.players[0].name == "Erling Haaland"
+
+
+class TestGetFixtureLineups:
+    @pytest.fixture
+    def fixture_lineups_payload(self):
+        return {
+            "get": "fixtures/lineups",
+            "parameters": {"fixture": 215662},
+            "errors": [],
+            "results": 2,
+            "response": [
+                {
+                    "team": {"id": 2284, "name": "Manchester City", "logo": "https://x.com/mci.png"},
+                    "formation": "4-3-3",
+                    "coach": {"id": 1, "name": "Pep Guardiola", "photo": ""},
+                    "startXI": [
+                        {"player": {"id": 35931, "name": "Haaland", "number": 9, "pos": "F", "grid": "4:2"}},
+                    ],
+                    "substitutes": [],
+                },
+                {
+                    "team": {"id": 2285, "name": "Liverpool", "logo": "https://x.com/liv.png"},
+                    "formation": "4-3-3",
+                    "coach": {"id": 2, "name": "Arne Slot", "photo": ""},
+                    "startXI": [],
+                    "substitutes": [],
+                },
+            ],
+        }
+
+    def test_passes_fixture_id(
+        self, football, mock_client, fixture_lineups_payload
+    ):
+        mock_client._get.return_value = fixture_lineups_payload
+        football.get_fixture_lineups(fixture=215662)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/lineups", params={"fixture": 215662}
+        )
+
+    def test_passes_team_filter(
+        self, football, mock_client, fixture_lineups_payload
+    ):
+        mock_client._get.return_value = fixture_lineups_payload
+        football.get_fixture_lineups(fixture=215662, team=2284)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/lineups", params={"fixture": 215662, "team": 2284}
+        )
+
+    def test_passes_player_filter(
+        self, football, mock_client, fixture_lineups_payload
+    ):
+        mock_client._get.return_value = fixture_lineups_payload
+        football.get_fixture_lineups(fixture=215662, player=35931)
+        mock_client._get.assert_called_once_with(
+            "/fixtures/lineups", params={"fixture": 215662, "player": 35931}
+        )
+
+    def test_passes_type_filter(
+        self, football, mock_client, fixture_lineups_payload
+    ):
+        mock_client._get.return_value = fixture_lineups_payload
+        football.get_fixture_lineups(fixture=215662, type="startXI")
+        mock_client._get.assert_called_once_with(
+            "/fixtures/lineups", params={"fixture": 215662, "type": "startXI"}
+        )
+
+    def test_passes_all_params(
+        self, football, mock_client, fixture_lineups_payload
+    ):
+        mock_client._get.return_value = fixture_lineups_payload
+        football.get_fixture_lineups(
+            fixture=215662, team=2284, player=35931, type="startXI"
+        )
+        mock_client._get.assert_called_once_with(
+            "/fixtures/lineups",
+            params={
+                "fixture": 215662,
+                "team": 2284,
+                "player": 35931,
+                "type": "startXI",
+            },
+        )
+
+    def test_returns_fixture_lineups(
+        self, football, mock_client, fixture_lineups_payload
+    ):
+        mock_client._get.return_value = fixture_lineups_payload
+        result = football.get_fixture_lineups(fixture=215662)
+        assert result is not None
+        assert result.fixture_id == 215662
+        assert result.home.team_id == 2284
+        assert result.away.team_id == 2285
+        assert result.home.formation == "4-3-3"
