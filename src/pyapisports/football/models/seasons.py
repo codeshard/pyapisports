@@ -43,22 +43,22 @@ class Season:
 
 @dataclass
 class SeasonsList:
-    seasons: list[str]
+    seasons: list[int]
 
     @classmethod
     def from_api(cls, data: dict[str, Any]) -> "SeasonsList":
         return cls(seasons=data["response"])
 
-    def __iter__(self) -> Iterator[str]:
+    def __iter__(self) -> Iterator[int]:
         return iter(self.seasons)
 
     def __len__(self) -> int:
         return len(self.seasons)
 
-    def __contains__(self, item: str) -> bool:
+    def __contains__(self, item: int) -> bool:
         return item in self.seasons
 
-    def to_list(self) -> list[str]:
+    def to_list(self) -> list[int]:
         return list(self.seasons)
 
     def to_json(self, **kwargs: Any) -> str:
