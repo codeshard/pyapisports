@@ -197,12 +197,27 @@ class FixtureStatistics:
     fixture_id: int
     home: TeamFixtureStatistics
     away: TeamFixtureStatistics
+    available: bool = True
+
+    @classmethod
+    def empty(cls, fixture_id: int) -> "FixtureStatistics":
+        placeholder = TeamFixtureStatistics(
+            team_id=0, team_name="", team_logo="", stats=[]
+        )
+        return cls(
+            fixture_id=fixture_id,
+            home=placeholder,
+            away=placeholder,
+            available=False,
+        )
 
     @classmethod
     def from_api(
         cls, data: dict[str, Any], fixture_id: int
     ) -> "FixtureStatistics":
         response = data["response"]
+        if len(response) < 2:
+            return cls.empty(fixture_id)
         return cls(
             fixture_id=fixture_id,
             home=TeamFixtureStatistics.from_api(response[0]),
@@ -237,6 +252,7 @@ class FixtureStatistics:
             "fixture_id": self.fixture_id,
             "home": self.home.to_dict(),
             "away": self.away.to_dict(),
+            "available": self.available,
         }
 
     def to_json(self, **kwargs: Any) -> str:

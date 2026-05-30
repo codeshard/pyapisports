@@ -218,12 +218,32 @@ class FixtureLineups:
     fixture_id: int
     home: TeamLineup
     away: TeamLineup
+    available: bool = True
+
+    @classmethod
+    def empty(cls, fixture_id: int) -> "FixtureLineups":
+        placeholder = TeamLineup(
+            team_id=0,
+            team_name="",
+            team_logo="",
+            formation=None,
+            colors=TeamColors.from_api(None),
+            coach=Coach.from_api(None),
+        )
+        return cls(
+            fixture_id=fixture_id,
+            home=placeholder,
+            away=placeholder,
+            available=False,
+        )
 
     @classmethod
     def from_api(
         cls, data: dict[str, Any], fixture_id: int
     ) -> "FixtureLineups":
         response = data["response"]
+        if len(response) < 2:
+            return cls.empty(fixture_id)
         return cls(
             fixture_id=fixture_id,
             home=TeamLineup.from_api(response[0]),

@@ -432,18 +432,27 @@ class FixturePlayers:
     fixture_id: int
     home: TeamFixturePlayers
     away: TeamFixturePlayers
+    available: bool = True
+
+    @classmethod
+    def empty(cls, fixture_id: int) -> "FixturePlayers":
+        placeholder = TeamFixturePlayers(team_id=0, team_name="", team_logo="")
+        return cls(
+            fixture_id=fixture_id,
+            home=placeholder,
+            away=placeholder,
+            available=False,
+        )
 
     @classmethod
     def from_api(
         cls, data: dict[str, Any], fixture_id: int
     ) -> "FixturePlayers":
         response = data["response"]
+        if not response:
+            return cls.empty(fixture_id)
         teams = [TeamFixturePlayers.from_api(t) for t in response]
-        home = (
-            teams[0]
-            if len(teams) > 0
-            else TeamFixturePlayers(team_id=0, team_name="", team_logo="")
-        )
+        home = teams[0]
         away = (
             teams[1]
             if len(teams) > 1
