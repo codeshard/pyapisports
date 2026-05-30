@@ -18,10 +18,10 @@ from pyapisports.football.models.fixtures.player_stats import (
     TeamFixturePlayers,
 )
 
-
 # ---------------------------------------------------------------------------
 #  Stat sub-objects
 # ---------------------------------------------------------------------------
+
 
 class TestPlayerGames:
     def test_from_api_none(self):
@@ -40,10 +40,16 @@ class TestPlayerGames:
         assert g.substitute is False
 
     def test_from_api_full(self):
-        g = PlayerGames.from_api({
-            "minutes": 90, "number": 9, "position": "F",
-            "rating": "9.2", "captain": True, "substitute": False,
-        })
+        g = PlayerGames.from_api(
+            {
+                "minutes": 90,
+                "number": 9,
+                "position": "F",
+                "rating": "9.2",
+                "captain": True,
+                "substitute": False,
+            }
+        )
         assert g.minutes == 90
         assert g.number == 9
         assert g.position == "F"
@@ -52,22 +58,54 @@ class TestPlayerGames:
         assert g.substitute is False
 
     def test_rating_float_valid(self):
-        g = PlayerGames(minutes=90, number=9, position="F", rating="9.2", captain=False, substitute=False)
+        g = PlayerGames(
+            minutes=90,
+            number=9,
+            position="F",
+            rating="9.2",
+            captain=False,
+            substitute=False,
+        )
         assert g.rating_float == 9.2
 
     def test_rating_float_none(self):
-        g = PlayerGames(minutes=0, number=0, position=None, rating=None, captain=False, substitute=False)
+        g = PlayerGames(
+            minutes=0,
+            number=0,
+            position=None,
+            rating=None,
+            captain=False,
+            substitute=False,
+        )
         assert g.rating_float is None
 
     def test_rating_float_invalid(self):
-        g = PlayerGames(minutes=0, number=0, position=None, rating="N/A", captain=False, substitute=False)
+        g = PlayerGames(
+            minutes=0,
+            number=0,
+            position=None,
+            rating="N/A",
+            captain=False,
+            substitute=False,
+        )
         assert g.rating_float is None
 
     def test_to_dict(self):
-        g = PlayerGames(minutes=90, number=9, position="F", rating="9.2", captain=True, substitute=False)
+        g = PlayerGames(
+            minutes=90,
+            number=9,
+            position="F",
+            rating="9.2",
+            captain=True,
+            substitute=False,
+        )
         assert g.to_dict() == {
-            "minutes": 90, "number": 9, "position": "F",
-            "rating": "9.2", "captain": True, "substitute": False,
+            "minutes": 90,
+            "number": 9,
+            "position": "F",
+            "rating": "9.2",
+            "captain": True,
+            "substitute": False,
         }
 
 
@@ -96,7 +134,9 @@ class TestPlayerGoals:
         assert g.saves is None
 
     def test_from_api_full(self):
-        g = PlayerGoals.from_api({"total": 2, "conceded": 0, "assists": 1, "saves": 0})
+        g = PlayerGoals.from_api(
+            {"total": 2, "conceded": 0, "assists": 1, "saves": 0}
+        )
         assert g.total == 2
         assert g.conceded == 0
         assert g.assists == 1
@@ -104,7 +144,12 @@ class TestPlayerGoals:
 
     def test_to_dict(self):
         g = PlayerGoals(total=2, conceded=0, assists=1, saves=0)
-        assert g.to_dict() == {"total": 2, "conceded": 0, "assists": 1, "saves": 0}
+        assert g.to_dict() == {
+            "total": 2,
+            "conceded": 0,
+            "assists": 1,
+            "saves": 0,
+        }
 
 
 class TestPlayerPasses:
@@ -145,7 +190,9 @@ class TestPlayerTackles:
         assert t.interceptions is None
 
     def test_from_api_full(self):
-        t = PlayerTackles.from_api({"total": 2, "blocks": 0, "interceptions": 1})
+        t = PlayerTackles.from_api(
+            {"total": 2, "blocks": 0, "interceptions": 1}
+        )
         assert t.total == 2
         assert t.blocks == 0
         assert t.interceptions == 1
@@ -215,7 +262,9 @@ class TestPlayerPenalty:
         assert p.saved is None
 
     def test_from_api_full(self):
-        p = PlayerPenalty.from_api({"won": 0, "commited": 0, "scored": 0, "missed": 0, "saved": 0})
+        p = PlayerPenalty.from_api(
+            {"won": 0, "commited": 0, "scored": 0, "missed": 0, "saved": 0}
+        )
         assert p.won == 0
         assert p.committed == 0
         assert p.scored == 0
@@ -224,28 +273,50 @@ class TestPlayerPenalty:
 
     def test_to_dict(self):
         p = PlayerPenalty(won=0, committed=0, scored=0, missed=0, saved=0)
-        assert p.to_dict() == {"won": 0, "commited": 0, "scored": 0, "missed": 0, "saved": 0}
+        assert p.to_dict() == {
+            "won": 0,
+            "commited": 0,
+            "scored": 0,
+            "missed": 0,
+            "saved": 0,
+        }
 
 
 # ---------------------------------------------------------------------------
 #  PlayerMatchStats
 # ---------------------------------------------------------------------------
 
+
 class TestPlayerMatchStats:
     @pytest.fixture
     def stats_data(self):
-        return [{
-            "games": {"minutes": 90, "number": 9, "position": "F", "rating": "9.2", "captain": False, "substitute": False},
-            "offsides": 1,
-            "shots": {"total": 5, "on": 4},
-            "goals": {"total": 2, "conceded": 0, "assists": 1, "saves": 0},
-            "passes": {"total": 42, "key": 1, "accuracy": "72%"},
-            "tackles": {"total": 0, "blocks": 0, "interceptions": 0},
-            "dribbles": {"attempts": 6, "success": 3, "past": 0},
-            "fouls": {"drawn": 1, "committed": 0},
-            "cards": {"yellow": 0, "red": 0},
-            "penalty": {"won": 0, "commited": 0, "scored": 0, "missed": 0, "saved": 0},
-        }]
+        return [
+            {
+                "games": {
+                    "minutes": 90,
+                    "number": 9,
+                    "position": "F",
+                    "rating": "9.2",
+                    "captain": False,
+                    "substitute": False,
+                },
+                "offsides": 1,
+                "shots": {"total": 5, "on": 4},
+                "goals": {"total": 2, "conceded": 0, "assists": 1, "saves": 0},
+                "passes": {"total": 42, "key": 1, "accuracy": "72%"},
+                "tackles": {"total": 0, "blocks": 0, "interceptions": 0},
+                "dribbles": {"attempts": 6, "success": 3, "past": 0},
+                "fouls": {"drawn": 1, "committed": 0},
+                "cards": {"yellow": 0, "red": 0},
+                "penalty": {
+                    "won": 0,
+                    "commited": 0,
+                    "scored": 0,
+                    "missed": 0,
+                    "saved": 0,
+                },
+            }
+        ]
 
     def test_from_api_empty(self):
         stats = PlayerMatchStats.from_api([])
@@ -290,23 +361,48 @@ class TestPlayerMatchStats:
 #  FixturePlayer
 # ---------------------------------------------------------------------------
 
+
 class TestFixturePlayer:
     @pytest.fixture
     def haaland_data(self):
         return {
-            "player": {"id": 35931, "name": "Erling Haaland", "photo": "https://x.com/photo.jpg"},
-            "statistics": [{
-                "games": {"minutes": 90, "number": 9, "position": "F", "rating": "9.2", "captain": False, "substitute": False},
-                "offsides": 1,
-                "shots": {"total": 5, "on": 4},
-                "goals": {"total": 2, "conceded": 0, "assists": 1, "saves": 0},
-                "passes": {"total": 42, "key": 1, "accuracy": "72%"},
-                "tackles": {"total": 0, "blocks": 0, "interceptions": 0},
-                "dribbles": {"attempts": 6, "success": 3, "past": 0},
-                "fouls": {"drawn": 1, "committed": 0},
-                "cards": {"yellow": 0, "red": 0},
-                "penalty": {"won": 0, "commited": 0, "scored": 0, "missed": 0, "saved": 0},
-            }],
+            "player": {
+                "id": 35931,
+                "name": "Erling Haaland",
+                "photo": "https://x.com/photo.jpg",
+            },
+            "statistics": [
+                {
+                    "games": {
+                        "minutes": 90,
+                        "number": 9,
+                        "position": "F",
+                        "rating": "9.2",
+                        "captain": False,
+                        "substitute": False,
+                    },
+                    "offsides": 1,
+                    "shots": {"total": 5, "on": 4},
+                    "goals": {
+                        "total": 2,
+                        "conceded": 0,
+                        "assists": 1,
+                        "saves": 0,
+                    },
+                    "passes": {"total": 42, "key": 1, "accuracy": "72%"},
+                    "tackles": {"total": 0, "blocks": 0, "interceptions": 0},
+                    "dribbles": {"attempts": 6, "success": 3, "past": 0},
+                    "fouls": {"drawn": 1, "committed": 0},
+                    "cards": {"yellow": 0, "red": 0},
+                    "penalty": {
+                        "won": 0,
+                        "commited": 0,
+                        "scored": 0,
+                        "missed": 0,
+                        "saved": 0,
+                    },
+                }
+            ],
         }
 
     @pytest.fixture
@@ -355,35 +451,97 @@ class TestFixturePlayer:
 #  TeamFixturePlayers
 # ---------------------------------------------------------------------------
 
+
 class TestTeamFixturePlayers:
     @pytest.fixture
     def team_data(self):
         return {
-            "team": {"id": 2284, "name": "Manchester City", "logo": "https://x.com/logo.png"},
+            "team": {
+                "id": 2284,
+                "name": "Manchester City",
+                "logo": "https://x.com/logo.png",
+            },
             "players": [
                 {
-                    "player": {"id": 35931, "name": "Erling Haaland", "photo": ""},
-                    "statistics": [{
-                        "games": {"minutes": 90, "number": 9, "position": "F", "rating": "9.2", "captain": False, "substitute": False},
-                        "shots": {"total": 5, "on": 4}, "goals": {"total": 2}, "passes": {"total": 42},
-                        "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
-                    }],
+                    "player": {
+                        "id": 35931,
+                        "name": "Erling Haaland",
+                        "photo": "",
+                    },
+                    "statistics": [
+                        {
+                            "games": {
+                                "minutes": 90,
+                                "number": 9,
+                                "position": "F",
+                                "rating": "9.2",
+                                "captain": False,
+                                "substitute": False,
+                            },
+                            "shots": {"total": 5, "on": 4},
+                            "goals": {"total": 2},
+                            "passes": {"total": 42},
+                            "tackles": {},
+                            "dribbles": {},
+                            "fouls": {},
+                            "cards": {},
+                            "penalty": {},
+                        }
+                    ],
                 },
                 {
-                    "player": {"id": 112, "name": "Kevin De Bruyne", "photo": ""},
-                    "statistics": [{
-                        "games": {"minutes": 75, "number": 17, "position": "M", "rating": "8.5", "captain": True, "substitute": False},
-                        "shots": {"total": 3, "on": 2}, "goals": {"total": 0}, "passes": {"total": 55},
-                        "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
-                    }],
+                    "player": {
+                        "id": 112,
+                        "name": "Kevin De Bruyne",
+                        "photo": "",
+                    },
+                    "statistics": [
+                        {
+                            "games": {
+                                "minutes": 75,
+                                "number": 17,
+                                "position": "M",
+                                "rating": "8.5",
+                                "captain": True,
+                                "substitute": False,
+                            },
+                            "shots": {"total": 3, "on": 2},
+                            "goals": {"total": 0},
+                            "passes": {"total": 55},
+                            "tackles": {},
+                            "dribbles": {},
+                            "fouls": {},
+                            "cards": {},
+                            "penalty": {},
+                        }
+                    ],
                 },
                 {
                     "player": {"id": 337, "name": "Ederson", "photo": ""},
-                    "statistics": [{
-                        "games": {"minutes": 90, "number": 1, "position": "G", "rating": None, "captain": False, "substitute": False},
-                        "shots": {"total": 0}, "goals": {"total": None, "conceded": 1, "saves": 3}, "passes": {"total": 28},
-                        "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
-                    }],
+                    "statistics": [
+                        {
+                            "games": {
+                                "minutes": 90,
+                                "number": 1,
+                                "position": "G",
+                                "rating": None,
+                                "captain": False,
+                                "substitute": False,
+                            },
+                            "shots": {"total": 0},
+                            "goals": {
+                                "total": None,
+                                "conceded": 1,
+                                "saves": 3,
+                            },
+                            "passes": {"total": 28},
+                            "tackles": {},
+                            "dribbles": {},
+                            "fouls": {},
+                            "cards": {},
+                            "penalty": {},
+                        }
+                    ],
                 },
             ],
         }
@@ -439,11 +597,31 @@ class TestTeamFixturePlayers:
 
     def test_substitutes(self, team):
         team.players[1] = FixturePlayer(
-            id=112, name="Sub", photo="",
-            stats=PlayerMatchStats.from_api([{
-                "games": {"minutes": 15, "number": 17, "position": "M", "rating": "6.0", "captain": False, "substitute": True},
-                "shots": {}, "goals": {}, "passes": {}, "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
-            }]),
+            id=112,
+            name="Sub",
+            photo="",
+            stats=PlayerMatchStats.from_api(
+                [
+                    {
+                        "games": {
+                            "minutes": 15,
+                            "number": 17,
+                            "position": "M",
+                            "rating": "6.0",
+                            "captain": False,
+                            "substitute": True,
+                        },
+                        "shots": {},
+                        "goals": {},
+                        "passes": {},
+                        "tackles": {},
+                        "dribbles": {},
+                        "fouls": {},
+                        "cards": {},
+                        "penalty": {},
+                    }
+                ]
+            ),
         )
         subs = team.substitutes()
         assert len(subs) == 1
@@ -470,7 +648,9 @@ class TestTeamFixturePlayers:
         assert p.name == "Erling Haaland"
 
     def test_top_rated_empty(self):
-        t = TeamFixturePlayers(team_id=0, team_name="", team_logo="", players=[])
+        t = TeamFixturePlayers(
+            team_id=0, team_name="", team_logo="", players=[]
+        )
         assert t.top_rated is None
 
     def test_to_dict(self, team):
@@ -488,32 +668,71 @@ class TestTeamFixturePlayers:
 #  FixturePlayers  (top-level)
 # ---------------------------------------------------------------------------
 
+
 class TestFixturePlayersFromApi:
     @pytest.fixture
     def home_player_data(self):
         return {
             "player": {"id": 35931, "name": "Haaland", "photo": ""},
-            "statistics": [{
-                "games": {"minutes": 90, "number": 9, "position": "F", "rating": "9.2", "captain": False, "substitute": False},
-                "shots": {}, "goals": {"total": 2}, "passes": {}, "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
-            }],
+            "statistics": [
+                {
+                    "games": {
+                        "minutes": 90,
+                        "number": 9,
+                        "position": "F",
+                        "rating": "9.2",
+                        "captain": False,
+                        "substitute": False,
+                    },
+                    "shots": {},
+                    "goals": {"total": 2},
+                    "passes": {},
+                    "tackles": {},
+                    "dribbles": {},
+                    "fouls": {},
+                    "cards": {},
+                    "penalty": {},
+                }
+            ],
         }
 
     @pytest.fixture
     def away_player_data(self):
         return {
             "player": {"id": 111, "name": "Salah", "photo": ""},
-            "statistics": [{
-                "games": {"minutes": 90, "number": 11, "position": "F", "rating": "8.1", "captain": False, "substitute": False},
-                "shots": {}, "goals": {"total": 0}, "passes": {}, "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
-            }],
+            "statistics": [
+                {
+                    "games": {
+                        "minutes": 90,
+                        "number": 11,
+                        "position": "F",
+                        "rating": "8.1",
+                        "captain": False,
+                        "substitute": False,
+                    },
+                    "shots": {},
+                    "goals": {"total": 0},
+                    "passes": {},
+                    "tackles": {},
+                    "dribbles": {},
+                    "fouls": {},
+                    "cards": {},
+                    "penalty": {},
+                }
+            ],
         }
 
     def test_from_api_two_teams(self, home_player_data, away_player_data):
         data = {
             "response": [
-                {"team": {"id": 1, "name": "Home", "logo": ""}, "players": [home_player_data]},
-                {"team": {"id": 2, "name": "Away", "logo": ""}, "players": [away_player_data]},
+                {
+                    "team": {"id": 1, "name": "Home", "logo": ""},
+                    "players": [home_player_data],
+                },
+                {
+                    "team": {"id": 2, "name": "Away", "logo": ""},
+                    "players": [away_player_data],
+                },
             ],
         }
         fp = FixturePlayers.from_api(data, fixture_id=100)
@@ -526,7 +745,10 @@ class TestFixturePlayersFromApi:
     def test_from_api_one_team(self, home_player_data):
         data = {
             "response": [
-                {"team": {"id": 1, "name": "Home", "logo": ""}, "players": [home_player_data]},
+                {
+                    "team": {"id": 1, "name": "Home", "logo": ""},
+                    "players": [home_player_data],
+                },
             ],
         }
         fp = FixturePlayers.from_api(data, fixture_id=100)
@@ -546,18 +768,74 @@ class TestFixturePlayersFromApi:
 class TestFixturePlayersMethods:
     @pytest.fixture
     def players(self):
-        home = TeamFixturePlayers(team_id=1, team_name="Home", team_logo="", players=[
-            FixturePlayer(id=10, name="A", photo="", stats=PlayerMatchStats.from_api([{
-                "games": {"minutes": 90, "number": 0, "position": "F", "rating": "8.0", "captain": False, "substitute": False},
-                "shots": {}, "goals": {"total": 1}, "passes": {}, "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
-            }])),
-        ])
-        away = TeamFixturePlayers(team_id=2, team_name="Away", team_logo="", players=[
-            FixturePlayer(id=20, name="B", photo="", stats=PlayerMatchStats.from_api([{
-                "games": {"minutes": 90, "number": 0, "position": "D", "rating": "7.0", "captain": False, "substitute": False},
-                "shots": {}, "goals": {"total": 0}, "passes": {}, "tackles": {}, "dribbles": {}, "fouls": {}, "cards": {}, "penalty": {},
-            }])),
-        ])
+        home = TeamFixturePlayers(
+            team_id=1,
+            team_name="Home",
+            team_logo="",
+            players=[
+                FixturePlayer(
+                    id=10,
+                    name="A",
+                    photo="",
+                    stats=PlayerMatchStats.from_api(
+                        [
+                            {
+                                "games": {
+                                    "minutes": 90,
+                                    "number": 0,
+                                    "position": "F",
+                                    "rating": "8.0",
+                                    "captain": False,
+                                    "substitute": False,
+                                },
+                                "shots": {},
+                                "goals": {"total": 1},
+                                "passes": {},
+                                "tackles": {},
+                                "dribbles": {},
+                                "fouls": {},
+                                "cards": {},
+                                "penalty": {},
+                            }
+                        ]
+                    ),
+                ),
+            ],
+        )
+        away = TeamFixturePlayers(
+            team_id=2,
+            team_name="Away",
+            team_logo="",
+            players=[
+                FixturePlayer(
+                    id=20,
+                    name="B",
+                    photo="",
+                    stats=PlayerMatchStats.from_api(
+                        [
+                            {
+                                "games": {
+                                    "minutes": 90,
+                                    "number": 0,
+                                    "position": "D",
+                                    "rating": "7.0",
+                                    "captain": False,
+                                    "substitute": False,
+                                },
+                                "shots": {},
+                                "goals": {"total": 0},
+                                "passes": {},
+                                "tackles": {},
+                                "dribbles": {},
+                                "fouls": {},
+                                "cards": {},
+                                "penalty": {},
+                            }
+                        ]
+                    ),
+                ),
+            ],
+        )
         return FixturePlayers(fixture_id=100, home=home, away=away)
 
     def test_for_team_home(self, players):
@@ -606,8 +884,12 @@ class TestFixturePlayersMethods:
     def test_top_rated_empty(self):
         fp = FixturePlayers(
             fixture_id=0,
-            home=TeamFixturePlayers(team_id=0, team_name="", team_logo="", players=[]),
-            away=TeamFixturePlayers(team_id=0, team_name="", team_logo="", players=[]),
+            home=TeamFixturePlayers(
+                team_id=0, team_name="", team_logo="", players=[]
+            ),
+            away=TeamFixturePlayers(
+                team_id=0, team_name="", team_logo="", players=[]
+            ),
         )
         assert fp.top_rated() == []
 
