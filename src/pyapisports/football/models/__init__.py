@@ -17,6 +17,7 @@ from .fixtures import (
     RoundsList,
 )
 from .leagues import League, LeagueList
+from .odds import OddsList
 from .seasons import Season, SeasonsList
 from .standings import StandingEntry, StandingRecord, Standings, StandingsTable
 from .status import Account, Requests, Status, Subscription
@@ -73,6 +74,7 @@ __all__ = [
     "HomeAwayTotalStr",
     "League",
     "LeagueList",
+    "OddsList",
     "LineupEntry",
     "PenaltyStat",
     "PenaltyStats",

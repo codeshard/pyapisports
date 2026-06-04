@@ -13,6 +13,7 @@ from pyapisports.football.models import (
     FixtureStatistics,
     HeadToHead,
     LeagueList,
+    OddsList,
     RoundsList,
     SeasonsList,
     Standings,
@@ -727,3 +728,71 @@ class FootballResource(BaseResource):
 
         raw = self._client._get("/fixtures/players", params=params)
         return FixturePlayers.from_api(raw, fixture_id=fixture)
+
+    def get_odds(
+        self,
+        fixture: int | None = None,
+        league: int | None = None,
+        season: int | None = None,
+        date: str | None = None,
+        timezone: str | None = None,
+        page: int | None = None,
+        bookmaker: int | None = None,
+        bet: int | None = None,
+    ) -> OddsList:
+        """
+        Retrieve pre-match odds for one or more fixtures.
+
+        At least one of `fixture`, `league`+`season`, or `date` is required.
+        The endpoint is paginated — use `page` to walk through large result
+        sets (e.g. a full league round).
+
+        Args:
+            fixture:    Return odds for a single fixture ID.
+            league:     Filter by league ID (combine with `season`).
+            season:     Season year, required when using `league`.
+            date:       Return odds for all fixtures on this date.
+            timezone:   Localise timestamps.
+            page:       Page number for paginated responses (default 1).
+            bookmaker:  Filter to a single bookmaker by ID.
+            bet:        Filter to a single market/bet type by ID.
+
+        Returns:
+            OddsList: Collection of FixtureOdds with cross-bookmaker
+            comparison helpers on each item.
+
+        Example:
+            >>> odds_list = client.football.get_odds(fixture=215662)
+            >>> odds = odds_list[0]
+            >>> odds.best_odd_for("Match Winner", "Home")
+            OddValue(odd="2.10", ...)
+            >>> odds.compare_bookmakers("Match Winner", "Home")
+            [{"bookmaker": "Bet365", "odd": "2.10", ...}, ...]
+
+        Update frequency:
+            Updated every hour for upcoming matches.
+            Odds are removed once the match kicks off.
+
+        API reference:
+            https://api-sports.io/documentation/football/v3#tag/Odds-(Pre-Match)/operation/get-odds
+        """
+        params: dict[str, Any] = {}
+        if fixture is not None:
+            params["fixture"] = fixture
+        if league is not None:
+            params["league"] = league
+        if season is not None:
+            params["season"] = season
+        if date is not None:
+            params["date"] = date
+        if timezone is not None:
+            params["timezone"] = timezone
+        if page is not None:
+            params["page"] = page
+        if bookmaker is not None:
+            params["bookmaker"] = bookmaker
+        if bet is not None:
+            params["bet"] = bet
+
+        raw = self._client._get("/odds", params=params)
+        return OddsList.from_api(raw)
