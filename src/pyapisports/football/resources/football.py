@@ -586,7 +586,9 @@ class FootballResource(BaseResource):
             params["half"] = "true" if half else "false"
 
         raw = self._client._get("/fixtures/statistics", params=params)
-        return FixtureStatistics.from_api(raw, fixture_id=fixture)
+        return FixtureStatistics.from_api(
+            raw, fixture_id=fixture, team_id=team
+        )
 
     def get_fixture_events(
         self,
@@ -639,7 +641,7 @@ class FootballResource(BaseResource):
         fixture: int,
         team: int | None = None,
         player: int | None = None,
-        type: str | None = None,  # "startXI" | "substitutes"
+        type: str | None = None,
     ) -> FixtureLineups:
         """
         Retrieve the starting lineups and substitutes bench for a fixture.
@@ -682,7 +684,7 @@ class FootballResource(BaseResource):
             params["type"] = type
 
         raw = self._client._get("/fixtures/lineups", params=params)
-        return FixtureLineups.from_api(raw, fixture_id=fixture)
+        return FixtureLineups.from_api(raw, fixture_id=fixture, team_id=team)
 
     def get_fixture_players(
         self,

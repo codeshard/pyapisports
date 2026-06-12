@@ -195,29 +195,41 @@ class TeamFixtureStatistics:
 @dataclass
 class FixtureStatistics:
     fixture_id: int
-    home: TeamFixtureStatistics
-    away: TeamFixtureStatistics
+    home: Optional[TeamFixtureStatistics]
+    away: Optional[TeamFixtureStatistics]
     available: bool = True
 
     @classmethod
     def empty(cls, fixture_id: int) -> "FixtureStatistics":
-        placeholder = TeamFixtureStatistics(
-            team_id=0, team_name="", team_logo="", stats=[]
-        )
         return cls(
             fixture_id=fixture_id,
-            home=placeholder,
-            away=placeholder,
+            home=None,
+            away=None,
             available=False,
         )
 
     @classmethod
     def from_api(
-        cls, data: dict[str, Any], fixture_id: int
+        cls,
+        data: dict[str, Any],
+        fixture_id: int,
+        team_id: int | None = None,
     ) -> "FixtureStatistics":
         response = data["response"]
-        if len(response) < 2:
+        if not response:
             return cls.empty(fixture_id)
+        if len(response) == 1:
+            tfs = TeamFixtureStatistics.from_api(response[0])
+            if team_id is not None:
+                return cls(
+                    fixture_id=fixture_id, home=tfs, away=None, available=True
+                )
+            return cls(
+                fixture_id=fixture_id,
+                home=tfs,
+                away=None,
+                available=True,
+            )
         return cls(
             fixture_id=fixture_id,
             home=TeamFixtureStatistics.from_api(response[0]),
@@ -227,31 +239,33 @@ class FixtureStatistics:
     def compare(self, stat_type: str) -> dict[str, Any]:
         return {
             "type": stat_type,
-            "home": self.home.int_value_of(stat_type),
-            "away": self.away.int_value_of(stat_type),
+            "home": self.home.int_value_of(stat_type) if self.home else None,
+            "away": self.away.int_value_of(stat_type) if self.away else None,
         }
 
-    def summary(self) -> dict[str, Any]:
-        all_types = [s.type for s in self.home.stats]
-        return {
-            "fixture_id": self.fixture_id,
-            "home_team": self.home.team_name,
-            "away_team": self.away.team_name,
-            "stats": [self.compare(t) for t in all_types],
-        }
+    def summary(self) -> Optional[dict[str, Any]]:
+        if self.home:
+            all_types = [s.type for s in self.home.stats]
+            return {
+                "fixture_id": self.fixture_id,
+                "home_team": self.home.team_name if self.home else None,
+                "away_team": self.away.team_name if self.away else None,
+                "stats": [self.compare(t) for t in all_types],
+            }
+        return None
 
     def for_team(self, team_id: int) -> Optional[TeamFixtureStatistics]:
-        if self.home.team_id == team_id:
+        if self.home and self.home.team_id == team_id:
             return self.home
-        if self.away.team_id == team_id:
+        if self.away and self.away.team_id == team_id:
             return self.away
         return None
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "fixture_id": self.fixture_id,
-            "home": self.home.to_dict(),
-            "away": self.away.to_dict(),
+            "home": self.home.to_dict() if self.home else None,
+            "away": self.away.to_dict() if self.away else None,
             "available": self.available,
         }
 
